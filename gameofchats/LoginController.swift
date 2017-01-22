@@ -33,10 +33,36 @@ class LoginController: UIViewController {
         button.layer.borderWidth = 1
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         return button
     }()
+    
+    func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: {(user, error) in
+        
+        	if error != nil {
+                print(error!)
+                return
+            }
+            
+            self.dismiss(animated: true, completion: nil)
+            
+        })
+    }
     
     func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
@@ -68,6 +94,8 @@ class LoginController: UIViewController {
                     return
                 }
             
+            	self.dismiss(animated: true, completion: nil)
+                
             	print("Saved user successfully into Firebase db")
                 
             })
