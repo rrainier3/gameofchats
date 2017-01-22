@@ -15,18 +15,41 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         let picker = UIImagePickerController()
         
         picker.delegate = self
+        picker.allowsEditing = true
         
         present(picker, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    
+    	var selectedImageFromPicker: UIImage?
         
-        print(info)
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            
+            selectedImageFromPicker = editedImage
+            
+            //print(editedImage)
+            
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+	        
+            selectedImageFromPicker = originalImage
+            
+            //print((originalImage)
+    	}
+        
+        if let selectedImage = selectedImageFromPicker {
+            profileImageView.image = selectedImage
+        }
+        
+        dismiss(animated: true, completion: nil)
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         print("Canceled Picker!")
+        dismiss(animated: true, completion: nil)
     }
     
 }

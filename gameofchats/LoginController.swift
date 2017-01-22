@@ -141,7 +141,7 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "gameofthrones_splash")
         imageView.translatesAutoresizingMaskIntoConstraints = false
