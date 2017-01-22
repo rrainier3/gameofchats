@@ -17,9 +17,15 @@ class MessagesController: UITableViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
-		checkIfUserIsLoggedIn()
-
+        let image = UIImage(named: "new_message_icon")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
+		checkIfUserIsLoggedIn()
+        
+    }
+    
+    func handleNewMessage() {
+		        
     }
     
     func checkIfUserIsLoggedIn() {
