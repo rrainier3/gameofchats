@@ -32,7 +32,11 @@ class MessagesController: UITableViewController {
 			let uid = FIRAuth.auth()?.currentUser?.uid
             FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: {(snapshot) in
             	
-                print(snapshot)
+                //print(snapshot)
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    self.navigationItem.title = dictionary["name"] as? String
+                }
                 
             	}, withCancel: nil)
         	}
