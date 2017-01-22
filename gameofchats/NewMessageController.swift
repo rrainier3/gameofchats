@@ -20,6 +20,8 @@ class NewMessageController: UITableViewController {
 
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
+        tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
         fetchUser()
     }
     
@@ -70,6 +72,8 @@ class NewMessageController: UITableViewController {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
+        
+        cell.imageView?.image = UIImage(named: "nedstark")
         
         return cell
     }
