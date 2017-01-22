@@ -59,6 +59,7 @@ class LoginController: UIViewController {
                 return
             }
             
+            // successfully logged in our user!
             self.dismiss(animated: true, completion: nil)
             
         })
@@ -107,6 +108,7 @@ class LoginController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Name"
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.layer.masksToBounds = true		// prevent Name from part-showing on toggle!
         return tf
     }()
     
@@ -173,7 +175,11 @@ class LoginController: UIViewController {
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
         
         // fix to clear 'Name' on toggle in inputsContainerView
-        nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? nil : "Name"
+        //nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? nil : "Name"
+        //nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
+        //
+        //	Note: the real fix is above on nameTextField added: tf.layer.masksToBounds = true
+        //
         
         nameTextFieldHeightAnchor?.isActive = true
         
