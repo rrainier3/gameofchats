@@ -101,15 +101,31 @@ class NewMessageController: UITableViewController {
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 56
+    }
 
 }
 
+
 class UserCell: UITableViewCell {
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // overriding textLabels' constraints in UITableViewCell
+        textLabel?.frame = CGRect(x: 56, y: (textLabel?.frame.origin.y)!, width: (textLabel?.frame.width)!, height: (textLabel?.frame.height)!)
+        
+        detailTextLabel?.frame = CGRect(x: 56, y: (detailTextLabel?.frame.origin.y)!, width: (detailTextLabel?.frame.width)!, height: (detailTextLabel?.frame.height)!)
+    }
 
 	let profileImageView: UIImageView = {
         let imageView = UIImageView()
 		imageView.image = UIImage(named: "nedstark")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 20
+        imageView.layer.masksToBounds = true
 		return imageView
     }()
     
