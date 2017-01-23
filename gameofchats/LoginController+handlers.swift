@@ -68,14 +68,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         
         let usersReference = ref.child("users").child(uid)
         
-
-        
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             
             if err != nil {
                 print(err!)
                 return
             }
+            
+            self.messagesController.fetchUserAndSetupNavBarTitle()
             
             self.dismiss(animated: true, completion: nil)
             
