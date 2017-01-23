@@ -67,35 +67,23 @@ class NewMessageController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // let us use a hack for now because we need to dequeue our cells for memory efficiency
-        //let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
+        // let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        // cell is giving UITableViewCell so we have to cast it to UserCell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
-        
-//        cell.imageView?.image = UIImage(named: "nedstark")
-//        cell.imageView?.contentMode = .scaleAspectFill
+
+        // overriding fonts
+        cell.textLabel?.font = UIFont(name: "ProximaNova-Regular", size: 16)
+        cell.detailTextLabel?.font = UIFont(name: "ProximaNova-Light", size: 12)
+
         
         if let profileImageUrl = user.profileImageUrl{
             
-            //cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
-            let url = NSURL(string: profileImageUrl)
-            
-            URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
-            
-            	// download hit an error so lets return out
-                if error != nil {
-                    print(error!)
-                    return
-                }
-            	
-                DispatchQueue.main.async {
-//                    cell.imageView?.image = UIImage(data: data!)
-                }
-            
-            }).resume()
+            cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         
         }
         
@@ -103,7 +91,7 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56
+        return 72
     }
 
 }
@@ -115,9 +103,9 @@ class UserCell: UITableViewCell {
         super.layoutSubviews()
         
         // overriding textLabels' constraints in UITableViewCell
-        textLabel?.frame = CGRect(x: 56, y: (textLabel?.frame.origin.y)!, width: (textLabel?.frame.width)!, height: (textLabel?.frame.height)!)
+        textLabel?.frame = CGRect(x: 60, y: ((textLabel?.frame.origin.y)! - 2), width: (textLabel?.frame.width)!, height: (textLabel?.frame.height)!)
         
-        detailTextLabel?.frame = CGRect(x: 56, y: (detailTextLabel?.frame.origin.y)!, width: (detailTextLabel?.frame.width)!, height: (detailTextLabel?.frame.height)!)
+        detailTextLabel?.frame = CGRect(x: 60, y: ((detailTextLabel?.frame.origin.y)! + 2), width: (detailTextLabel?.frame.width)!, height: (detailTextLabel?.frame.height)!)
     }
 
 	let profileImageView: UIImageView = {

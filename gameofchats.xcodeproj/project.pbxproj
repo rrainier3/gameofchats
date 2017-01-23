@@ -18,6 +18,7 @@
 		4FCE126C1E2FF9F2006DDF24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCE126B1E2FF9F2006DDF24 /* Assets.xcassets */; };
 		4FCE126F1E2FF9F2006DDF24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FCE126D1E2FF9F2006DDF24 /* LaunchScreen.storyboard */; };
 		4FCE127A1E3005A4006DDF24 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE12791E3005A4006DDF24 /* LoginController.swift */; };
+		4FCF9EBA1E368D92001F61C2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCF9EB91E368D92001F61C2 /* Extensions.swift */; };
 		4FF65FB51E34DE3A00249C20 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF65FB41E34DE3A00249C20 /* User.swift */; };
 		4FF65FB71E35000B00249C20 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF65FB61E35000B00249C20 /* LoginController+handlers.swift */; };
 		CC6DD756A7D784733325567C /* Pods_gameofchats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 625F21865DFB153B4FF30C0C /* Pods_gameofchats.framework */; };
@@ -25,9 +26,9 @@
 
 /* Begin PBXFileReference section */
 		168F215C61462016DAFE66BE /* Pods-gameofchats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameofchats.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gameofchats/Pods-gameofchats.debug.xcconfig"; sourceTree = "<group>"; };
-		4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
-		4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
-		4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.otf"; path = "gameofchats/ProximaNova-Regular.otf"; sourceTree = SOURCE_ROOT; };
+		4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Light.otf"; path = "gameofchats/ProximaNova-Light.otf"; sourceTree = SOURCE_ROOT; };
+		4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Bold.otf"; path = "gameofchats/ProximaNova-Bold.otf"; sourceTree = SOURCE_ROOT; };
 		4FBC7C531E3461E6007DC399 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		4FC7099E1E32D1900092CDEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4FCE12611E2FF9F2006DDF24 /* gameofchats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gameofchats.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -38,6 +39,7 @@
 		4FCE126E1E2FF9F2006DDF24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FCE12701E2FF9F2006DDF24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FCE12791E3005A4006DDF24 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		4FCF9EB91E368D92001F61C2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4FF65FB41E34DE3A00249C20 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4FF65FB61E35000B00249C20 /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		5E1CB418DF0AF1D2ED9DD3FF /* Pods-gameofchats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameofchats.release.xcconfig"; path = "Pods/Target Support Files/Pods-gameofchats/Pods-gameofchats.release.xcconfig"; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		4FCE12631E2FF9F2006DDF24 /* gameofchats */ = {
 			isa = PBXGroup;
 			children = (
+				4FCF9EB81E368D7B001F61C2 /* Helpers */,
 				4FF65FB31E34DDDD00249C20 /* Model */,
 				4FCE12761E30046F006DDF24 /* Controller */,
 				4FCE12641E2FF9F2006DDF24 /* AppDelegate.swift */,
@@ -109,6 +112,14 @@
 				4FBC7C531E3461E6007DC399 /* NewMessageController.swift */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		4FCF9EB81E368D7B001F61C2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4FCF9EB91E368D92001F61C2 /* Extensions.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		4FF65FB31E34DDDD00249C20 /* Model */ = {
@@ -270,6 +281,7 @@
 				4FCE127A1E3005A4006DDF24 /* LoginController.swift in Sources */,
 				4FF65FB51E34DE3A00249C20 /* User.swift in Sources */,
 				4FCE12651E2FF9F2006DDF24 /* AppDelegate.swift in Sources */,
+				4FCF9EBA1E368D92001F61C2 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
