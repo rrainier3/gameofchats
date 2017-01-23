@@ -20,6 +20,8 @@ class NewMessageController: UITableViewController {
 
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
+        // to be able to utilize a custom UserCell instead of default see UserCell implementation 
+        // at the end of this file
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         fetchUser()
@@ -73,7 +75,29 @@ class NewMessageController: UITableViewController {
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         
-        cell.imageView?.image = UIImage(named: "nedstark")
+//        cell.imageView?.image = UIImage(named: "nedstark")
+//        cell.imageView?.contentMode = .scaleAspectFill
+        
+        if let profileImageUrl = user.profileImageUrl{
+            
+            //cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+            let url = NSURL(string: profileImageUrl)
+            
+            URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+            
+            	// download hit an error so lets return out
+                if error != nil {
+                    print(error!)
+                    return
+                }
+            	
+                DispatchQueue.main.async {
+//                    cell.imageView?.image = UIImage(data: data!)
+                }
+            
+            }).resume()
+        
+        }
         
         return cell
     }
@@ -81,8 +105,25 @@ class NewMessageController: UITableViewController {
 }
 
 class UserCell: UITableViewCell {
+
+	let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+		imageView.image = UIImage(named: "nedstark")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+		return imageView
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        
+        addSubview(profileImageView)
+        // x,y,width,height constraints
+        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
