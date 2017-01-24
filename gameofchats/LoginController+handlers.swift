@@ -32,9 +32,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             // lets Save an image to Storage
             let imageName = NSUUID().uuidString
-            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+			// Implement compression to reduce file upload size!
+            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+
+//		Instead of ...
+//            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 
                 storageRef.put(uploadData, metadata: nil, completion: {(metadata, error) in
                 
