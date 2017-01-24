@@ -3,7 +3,7 @@
 //  gameofchats
 //
 //  Created by RayRainier on 1/18/17.
-//  Copyright © 2017 RadiuSense. All rights reserved.
+//  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
 
 import UIKit
