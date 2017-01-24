@@ -35,7 +35,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
 			// Implement compression to reduce file upload size!
-            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+//            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+
+//		For safe unwrapping ..
+			if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
 
 //		Instead of ...
 //            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
@@ -59,7 +62,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                     
              })  // storageReg.put
              
-        }  // uploadData
+        }  // uploadData or if let profileImage
             
             
         }) // FIRAuth.auth()?.creatUser
