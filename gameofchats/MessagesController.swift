@@ -70,7 +70,12 @@ class MessagesController: UITableViewController {
     
     	let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        titleView.backgroundColor = UIColor.red
+        //titleView.backgroundColor = UIColor.red
+        
+        let containerView = UIView()	// we need this view to resolve the issue of truncating title nav
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleView.addSubview(containerView)
         
         let profileImageView = UIImageView()
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,17 +87,17 @@ class MessagesController: UITableViewController {
             profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
         
-        titleView.addSubview(profileImageView)
+        containerView.addSubview(profileImageView)
         
         // x,y, width, height constraints
-        profileImageView.leftAnchor.constraint(equalTo: titleView.leftAnchor).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
+        profileImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         let nameLabel = UILabel()
         
-        titleView.addSubview(nameLabel)
+        containerView.addSubview(nameLabel)
         
         nameLabel.text = user.name
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -100,9 +105,11 @@ class MessagesController: UITableViewController {
         // x, y, width, height
         nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
-        nameLabel.rightAnchor.constraint(equalTo: titleView.rightAnchor).isActive = true
+        nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
 
+		containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
+        containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
         self.navigationItem.titleView = titleView
 

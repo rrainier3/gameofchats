@@ -5,6 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
+//	Lets Fix some Bugs and Use JPEG Image Compression (Ep 7)
 
 import UIKit
 import Firebase
