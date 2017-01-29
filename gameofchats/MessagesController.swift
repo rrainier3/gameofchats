@@ -121,7 +121,9 @@ class MessagesController: UITableViewController {
     func showChatController() {
         
         // segue to ChatLogController programmatically!
-        let chatLogController = ChatLogController()
+        //
+        // collectionViewLayout param is needed bec the call crashes because the target UICollectionViewController expects layout
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         navigationController?.pushViewController(chatLogController, animated: true)
         
     }
