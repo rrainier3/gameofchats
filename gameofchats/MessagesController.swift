@@ -112,7 +112,18 @@ class MessagesController: UITableViewController {
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
         self.navigationItem.titleView = titleView
+        
+        // enable navigation bar titleView to trigger tap -> showChatController!
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
 
+    }
+    
+    func showChatController() {
+        
+        // segue to ChatLogController programmatically!
+        let chatLogController = ChatLogController()
+        navigationController?.pushViewController(chatLogController, animated: true)
+        
     }
     
     func handleLogout() {
