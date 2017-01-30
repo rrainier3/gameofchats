@@ -23,8 +23,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     }()
 
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,10 +91,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
     // handle Send Button onclick event
     func handleSend() {
+    
+    	let senderUid = FIRAuth.auth()?.currentUser?.uid
+        //let receiverUid =
         
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let values = ["text": inputTextField.text!]
+        let values = ["text": inputTextField.text!, "SenderUid": senderUid]
         childRef.updateChildValues(values)
         
     }
