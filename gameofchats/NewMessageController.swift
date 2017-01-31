@@ -1,5 +1,5 @@
 //
-//  NewMessageController.swift
+//  NewMessageController.swift		- USERS LIST SCREEN
 //  gameofchats
 //
 //  Created by RayRainier on 1/21/17.
@@ -39,7 +39,7 @@ class NewMessageController: UITableViewController {
                 // properties don't match up with the firebase dictionary keys
                 user.setValuesForKeys(dictionary)
             
-                // the proper is to do ff
+                // the safer way to do is the ff
                 // user.name = dictionary["name"]
                 // user.name = dictionary["email"]
             

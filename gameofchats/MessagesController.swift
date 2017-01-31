@@ -1,5 +1,5 @@
 //
-//  MessagesController.swift
+//  MessagesController.swift		- USERS MESSAGES HISTORY SCREEN
 //  gameofchats
 //
 //  Created by RayRainier on 1/18/17.
@@ -39,6 +39,8 @@ class MessagesController: UITableViewController {
             	let message = Message()
                 message.setValuesForKeys(dictionary)
                 self.messages.append(message)
+
+//				 print(message.text!)
                 
                 // this will crash bec of background thread, so lets call this on
                 // dispatch_asynch main thread

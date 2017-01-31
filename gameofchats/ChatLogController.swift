@@ -1,5 +1,5 @@
 //
-//  ChatLogController.swift
+//  ChatLogController.swift		- CHAT SCREEN ONE-ON-ONE
 //  gameofchats
 //
 //  Created by RayRainier on 1/29/17.

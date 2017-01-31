@@ -1,5 +1,5 @@
 //
-//  LoginController.swift
+//  LoginController.swift	- OPENING LOGIN SCREEN
 //  gameofchats
 //
 //  Created by RayRainier on 1/18/17.
