@@ -11,6 +11,8 @@ import Firebase
 
 class MessagesController: UITableViewController {
 
+	var user : User?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +28,9 @@ class MessagesController: UITableViewController {
     
     func handleNewMessage() {
 		let newMessageController = NewMessageController()
+        
+        newMessageController.messagesController = self
+        
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
@@ -114,9 +119,21 @@ class MessagesController: UITableViewController {
         self.navigationItem.titleView = titleView
         
         // enable navigation bar titleView to trigger tap -> showChatController!
-        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+        //
+        // Note: we don't need this anymore since we enable the navigationBarItem.right to go
+        // 			to ChatLogController
+//        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
 
     }
+    
+    // We implement func showChatControllerForUser(user: User) and go to ChatLogController!
+    func showChatControllerForUser(user: User) {
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
+        navigationController?.pushViewController(chatLogController, animated: true)
+        
+    }
+    
     
     func showChatController() {
         

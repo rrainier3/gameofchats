@@ -8,8 +8,19 @@
 
 import UIKit
 import Firebase
+import MobileCoreServices
+import AVFoundation
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    var user: User? {
+        didSet {
+        
+            navigationItem.title = user?.name
+            
+            
+        }
+    }
 
     // create the input text field
     lazy var inputTextField:UITextField = {
@@ -26,7 +37,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Chat Log Controller"
+        //navigationItem.title = "Chat Log Controller"
         
         // check collectionView
         collectionView?.backgroundColor = .white
@@ -92,12 +103,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     // handle Send Button onclick event
     func handleSend() {
     
-    	let senderUid = FIRAuth.auth()?.currentUser?.uid
-        //let receiverUid =
+    	let fromId: String = (FIRAuth.auth()?.currentUser?.uid)!
+        let toId = user!.id!
+        let timestamp = NSDate().timeIntervalSince1970
         
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let values = ["text": inputTextField.text!, "SenderUid": senderUid]
+        let values: [String: Any] = ["Text": inputTextField.text!, "FromUid": fromId, "ToUid": toId, "Timestamp": timestamp]
         childRef.updateChildValues(values)
         
     }
