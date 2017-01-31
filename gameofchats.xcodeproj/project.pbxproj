@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F6E31041E40204D00E370BF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E31031E40204D00E370BF /* Message.swift */; };
 		4F73B83F1E31BCD900543D7D /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */; };
 		4F73B8411E31BCE400543D7D /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */; };
 		4F73B8431E31BCF500543D7D /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		168F215C61462016DAFE66BE /* Pods-gameofchats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameofchats.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gameofchats/Pods-gameofchats.debug.xcconfig"; sourceTree = "<group>"; };
+		4F6E31031E40204D00E370BF /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.otf"; path = "gameofchats/ProximaNova-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Light.otf"; path = "gameofchats/ProximaNova-Light.otf"; sourceTree = SOURCE_ROOT; };
 		4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Bold.otf"; path = "gameofchats/ProximaNova-Bold.otf"; sourceTree = SOURCE_ROOT; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				4FF65FB41E34DE3A00249C20 /* User.swift */,
+				4F6E31031E40204D00E370BF /* Message.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				4FC831F71E3E655A0052BF86 /* ChatLogController.swift in Sources */,
 				4FBC7C541E3461E6007DC399 /* NewMessageController.swift in Sources */,
 				4FCE12671E2FF9F2006DDF24 /* MessagesController.swift in Sources */,
+				4F6E31041E40204D00E370BF /* Message.swift in Sources */,
 				4FF65FB71E35000B00249C20 /* LoginController+handlers.swift in Sources */,
 				4FCE127A1E3005A4006DDF24 /* LoginController.swift in Sources */,
 				4FF65FB51E34DE3A00249C20 /* User.swift in Sources */,

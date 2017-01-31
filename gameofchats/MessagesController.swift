@@ -24,6 +24,46 @@ class MessagesController: UITableViewController {
         
 		checkIfUserIsLoggedIn()
         
+        observeMessages()
+        
+    }
+    
+    var messages = [Message]()
+    
+    func observeMessages() {
+    
+    	let ref = FIRDatabase.database().reference().child("messages")
+        ref.observe(.childAdded, with: {(snapshot) in
+        
+        	if let dictionary = snapshot.value as? [String: AnyObject] {
+            	let message = Message()
+                message.setValuesForKeys(dictionary)
+                self.messages.append(message)
+                
+                // this will crash bec of background thread, so lets call this on
+                // dispatch_asynch main thread
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                })
+            }
+            
+        }, withCancel: nil)
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+        
+        let message = messages[indexPath.row]
+        
+        cell.textLabel?.text = message.toId
+        cell.detailTextLabel?.text = message.text
+        
+        return cell
     }
     
     func handleNewMessage() {
