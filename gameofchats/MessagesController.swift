@@ -12,6 +12,8 @@ import Firebase
 class MessagesController: UITableViewController {
 
 	var user : User?
+    
+    var messages = [Message]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +27,10 @@ class MessagesController: UITableViewController {
 		checkIfUserIsLoggedIn()
         
         observeMessages()
-        
+
     }
     
-    var messages = [Message]()
+
     
     func observeMessages() {
     
@@ -46,7 +48,7 @@ class MessagesController: UITableViewController {
                 // dispatch_asynch main thread
                 DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
-                })
+            	})
             }
             
         }, withCancel: nil)
@@ -58,6 +60,7 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
         
         let message = messages[indexPath.row]
