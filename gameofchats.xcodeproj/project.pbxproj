@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F538C671E418FEF003DE3F8 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F538C661E418FEF003DE3F8 /* UserCell.swift */; };
 		4F6E31041E40204D00E370BF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E31031E40204D00E370BF /* Message.swift */; };
 		4F73B83F1E31BCD900543D7D /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */; };
 		4F73B8411E31BCE400543D7D /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		168F215C61462016DAFE66BE /* Pods-gameofchats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameofchats.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gameofchats/Pods-gameofchats.debug.xcconfig"; sourceTree = "<group>"; };
+		4F538C661E418FEF003DE3F8 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		4F6E31031E40204D00E370BF /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.otf"; path = "gameofchats/ProximaNova-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Light.otf"; path = "gameofchats/ProximaNova-Light.otf"; sourceTree = SOURCE_ROOT; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				4FF65FB41E34DE3A00249C20 /* User.swift */,
+				4F538C661E418FEF003DE3F8 /* UserCell.swift */,
 				4F6E31031E40204D00E370BF /* Message.swift */,
 			);
 			name = Model;
@@ -289,6 +292,7 @@
 				4FCE127A1E3005A4006DDF24 /* LoginController.swift in Sources */,
 				4FF65FB51E34DE3A00249C20 /* User.swift in Sources */,
 				4FCE12651E2FF9F2006DDF24 /* AppDelegate.swift in Sources */,
+				4F538C671E418FEF003DE3F8 /* UserCell.swift in Sources */,
 				4FCF9EBA1E368D92001F61C2 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
