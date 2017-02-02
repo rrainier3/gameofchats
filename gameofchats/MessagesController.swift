@@ -52,7 +52,15 @@ class MessagesController: UITableViewController {
                 //DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
                 //})
-                
+/*
+	Here is Kelvin Fok solution for above DispatchQueue not working
+    
+                 OperationQueue.main.addOperation {
+                 self.tableView.reloadData()
+                 }﻿
+
+*/
+
                 print(message.text!)
                 
             }
