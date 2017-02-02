@@ -71,7 +71,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }  // end of handleRegister()
     
     private func registerUserIntoDatabaseWithUID(uid: String, values: [String: AnyObject]) {
-        let ref = FIRDatabase.database().reference(fromURL: "https://gameofchats-5dc27.firebaseio.com/")
+        
+        //let ref = FIRDatabase.database().reference(fromURL: "https://gameofchats-5dc27.firebaseio.com/")
+/*
+		Access reference firebase database via GoogleService-Info.plist
+        below instead of hardcoding above!
+*/
+		let ref = FIRDatabase.database().reference()
         
         let usersReference = ref.child("users").child(uid)
         
