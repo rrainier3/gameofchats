@@ -103,15 +103,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     // handle Send Button onclick event
     func handleSend() {
     
-    	let fromId = FIRAuth.auth()?.currentUser?.uid
-        let toId = user!.id!
-        let timestamp = NSDate().timeIntervalSince1970
-        
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let values: [String: Any] = ["Text": inputTextField.text!, "FromUid": fromId!, "ToUid": toId, "Timestamp": timestamp]
-        childRef.updateChildValues(values)
         
+        let toId = user!.id!
+    	let fromId = FIRAuth.auth()?.currentUser?.uid
+        let timestamp = NSDate().timeIntervalSince1970
+
+        let values: [String: Any] = ["Text": inputTextField.text!, "FromUid": fromId!, "ToUid": toId, "Timestamp": timestamp]
+        childRef.updateChildValues(values)       
+     
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

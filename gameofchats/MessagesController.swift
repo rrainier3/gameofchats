@@ -29,26 +29,32 @@ class MessagesController: UITableViewController {
         observeMessages()
 
     }
-    
 
-    
-    func observeMessages() {
-    
-    	let ref = FIRDatabase.database().reference().child("messages")
-        ref.observe(.childAdded, with: {(snapshot) in
+
+	func observeMessages() {
+        
+        let ref = FIRDatabase.database().reference().child("messages")
+        ref.observe(.childAdded, with: { (snapshot) in
         
         	if let dictionary = snapshot.value as? [String: AnyObject] {
-            	let message = Message()
-                message.setValuesForKeys(dictionary)
+                
+                let message = Message()
+//                message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
+				message.fromId = (dictionary["FromUid"] as! String)
+                message.text = dictionary["Text"] as! String?
+                message.timestamp = (dictionary["Timestamp"] as! NSNumber)
+                message.toId = (dictionary["ToUid"] as! String)
+                
                 self.messages.append(message)
 
-//				 print(message.text!)
-                
                 // this will crash bec of background thread, so lets call this on
                 // dispatch_asynch main thread
-                DispatchQueue.main.async(execute: {
+                //DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
-            	})
+                //})
+                
+                print(message.text!)
+                
             }
             
         }, withCancel: nil)
@@ -56,15 +62,13 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        return self.messages.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
         
-        let message = messages[indexPath.row]
-        
+        let message = self.messages[indexPath.row]
         cell.textLabel?.text = message.toId
         cell.detailTextLabel?.text = message.text
         
