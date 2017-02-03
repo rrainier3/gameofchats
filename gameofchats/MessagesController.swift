@@ -16,6 +16,7 @@ class MessagesController: UITableViewController {
 	var user : User?
     
     var messages = [Message]()
+    var messagesDictionary = [String: Message]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +50,19 @@ class MessagesController: UITableViewController {
                 message.timestamp = (dictionary["Timestamp"] as! NSNumber)
                 message.toId = (dictionary["ToUid"] as! String)
                 
-                self.messages.append(message)
+//                self.messages.append(message)
 
+				if let toId = message.toId {
+                	self.messagesDictionary[toId] = message
+                    
+                    self.messages = Array(self.messagesDictionary.values)
+                    self.messages.sort(by: {(message1, message2) -> Bool in
+                    
+                    	return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                        
+                    })
+                
+                }
                 // this will crash bec of background thread, so lets call this on
                 // dispatch_asynch main thread
                 //DispatchQueue.main.async(execute: {
