@@ -11,6 +11,8 @@ import Firebase
 
 class MessagesController: UITableViewController {
 
+	let cellId = "cellId"
+
 	var user : User?
     
     var messages = [Message]()
@@ -25,6 +27,8 @@ class MessagesController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
 		checkIfUserIsLoggedIn()
+        
+        tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         observeMessages()
 
@@ -53,15 +57,13 @@ class MessagesController: UITableViewController {
                     self.tableView.reloadData()
                 //})
 /*
-	Here is Kelvin Fok solution for above DispatchQueue not working
-    
+	Here is Kelvin Fok solution for above DispatchQueue not working -> sometimes :(
+
                  OperationQueue.main.addOperation {
-                 self.tableView.reloadData()
-                 }﻿
-
+                 	self.tableView.reloadData()
+                 }
 */
-
-                print(message.text!)
+//               print(message.text!)
                 
             }
             
@@ -74,13 +76,18 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let message = self.messages[indexPath.row]
-        cell.textLabel?.text = message.toId
-        cell.detailTextLabel?.text = message.text
+
+		cell.message = message			// Set message to trigger didSet() in UserCell instance
         
-        return cell
+        return cell						// return UserCell!
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
     }
     
     func handleNewMessage() {

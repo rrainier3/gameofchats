@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F6E31041E40204D00E370BF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E31031E40204D00E370BF /* Message.swift */; };
+		4F7254F61E43D9840027F48D /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7254F51E43D9840027F48D /* UserCell.swift */; };
 		4F73B83F1E31BCD900543D7D /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */; };
 		4F73B8411E31BCE400543D7D /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */; };
 		4F73B8431E31BCF500543D7D /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		168F215C61462016DAFE66BE /* Pods-gameofchats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameofchats.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gameofchats/Pods-gameofchats.debug.xcconfig"; sourceTree = "<group>"; };
 		4F6E31031E40204D00E370BF /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		4F7254F51E43D9840027F48D /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		4F73B83E1E31BCD800543D7D /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.otf"; path = "gameofchats/ProximaNova-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		4F73B8401E31BCE400543D7D /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Light.otf"; path = "gameofchats/ProximaNova-Light.otf"; sourceTree = SOURCE_ROOT; };
 		4F73B8421E31BCF500543D7D /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Bold.otf"; path = "gameofchats/ProximaNova-Bold.otf"; sourceTree = SOURCE_ROOT; };
@@ -62,6 +64,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F7254F41E43D9620027F48D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4F7254F51E43D9840027F48D /* UserCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		4F73B83D1E31BCAA00543D7D /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				4FCF9EB81E368D7B001F61C2 /* Helpers */,
+				4F7254F41E43D9620027F48D /* View */,
 				4FF65FB31E34DDDD00249C20 /* Model */,
 				4FCE12761E30046F006DDF24 /* Controller */,
 				4FCE12641E2FF9F2006DDF24 /* AppDelegate.swift */,
@@ -289,6 +300,7 @@
 				4FCE127A1E3005A4006DDF24 /* LoginController.swift in Sources */,
 				4FF65FB51E34DE3A00249C20 /* User.swift in Sources */,
 				4FCE12651E2FF9F2006DDF24 /* AppDelegate.swift in Sources */,
+				4F7254F61E43D9840027F48D /* UserCell.swift in Sources */,
 				4FCF9EBA1E368D92001F61C2 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
