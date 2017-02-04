@@ -32,8 +32,6 @@ class MessagesController: UITableViewController {
         
 //        observeMessages()
 
-		observeUserMessages()
-
     }
     
     var messages = [Message]()
@@ -58,7 +56,7 @@ class MessagesController: UITableViewController {
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
                     let message = Message()
-                    //                message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
+                    // message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
                     message.fromId = (dictionary["FromUid"] as! String)
                     message.text = dictionary["Text"] as! String?
                     message.timestamp = (dictionary["Timestamp"] as! NSNumber)
@@ -205,6 +203,9 @@ class MessagesController: UITableViewController {
     	messages.removeAll()
         messagesDictionary.removeAll()
         tableView.reloadData()
+        
+        observeUserMessages()			// originally in ViewDidLoad()
+
     
     	let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
