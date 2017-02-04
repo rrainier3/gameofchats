@@ -54,7 +54,7 @@ class MessagesController: UITableViewController {
             
             messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
-                //print(snapshot)
+                print(snapshot)
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
                     let message = Message()
@@ -78,7 +78,7 @@ class MessagesController: UITableViewController {
                     // this will crash bec of background thread, so lets call this on
                     // dispatch_asynch main thread
                     //DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    	self.tableView.reloadData()
                     //})
                     
                 }
