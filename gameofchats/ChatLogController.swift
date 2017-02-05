@@ -23,6 +23,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
+    var messages = [Message]()		// Let's construct an array container for this user's messages
+    
     func observeMessages() {
         
         guard let uid = FIRAuth.auth()?.currentUser?.uid else {
@@ -48,9 +50,22 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 let message = Message()
                 // potential of crashing if keys don't match
-                message.setValuesForKeys(dictionary)
+
+                // message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
+                message.fromId = (dictionary["FromUid"] as! String)
+                message.text = dictionary["Text"] as! String?
+                message.timestamp = (dictionary["Timestamp"] as! NSNumber)
+                message.toId = (dictionary["ToUid"] as! String)
                 
-                print(message.text!)
+                
+                self.messages.append(message)
+                
+                DispatchQueue.main.async(execute: {
+                    self.collectionView?.reloadData()
+                })
+                
+                
+                //print(message.text!)
                 
             }, withCancel: nil)
             
@@ -78,21 +93,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         // check collectionView
         collectionView?.backgroundColor = .white
         
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         
         setupInputComponents()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return messages.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
  
-        cell.backgroundColor = UIColor.blue
+        //cell.backgroundColor = UIColor.blue
         
         return cell
     }
@@ -103,7 +118,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupInputComponents() {
         let containerView = UIView()
-        //containerView.backgroundColor = UIColor.red
+        
+        containerView.backgroundColor = UIColor.white		// opaque white prevents the collection view from hovering/covering the input text field below the screen
+        
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(containerView)

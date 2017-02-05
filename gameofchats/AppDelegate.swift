@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
-//	Firebase 3 - How to Reduce Cost and Support Multiple Users (Ep 11)
+//	Firebase 3 - How to Load Entire Chat Log per User (Ep 12)
 
 import UIKit
 import Firebase
