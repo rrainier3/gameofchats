@@ -32,7 +32,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return textField
         
     }()
-
+    
+    let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +43,27 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         // check collectionView
         collectionView?.backgroundColor = .white
         
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        
         
         setupInputComponents()
+    }
+    
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 5
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+ 
+        cell.backgroundColor = .blue
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.height, height: 80)
     }
     
     func setupInputComponents() {
