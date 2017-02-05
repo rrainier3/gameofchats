@@ -18,8 +18,43 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
             navigationItem.title = user?.name
             
+            observeMessages()		// We are observing this user's messages!
             
         }
+    }
+    
+    func observeMessages() {
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid)
+        
+        userMessagesRef.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+            
+            //print(snapshot)
+            
+            let messageId = snapshot.key
+            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            
+            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                //print(snapshot)
+                
+                guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                    return
+                }
+                
+                let message = Message()
+                // potential of crashing if keys don't match
+                message.setValuesForKeys(dictionary)
+                
+                print(message.text!)
+                
+            }, withCancel: nil)
+            
+        }, withCancel: nil)
     }
 
     // create the input text field
