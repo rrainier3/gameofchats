@@ -30,7 +30,7 @@ class UserCell: UITableViewCell {
         }
     }
     
-    fileprivate func setupNameAndProfileImage() {
+    private func setupNameAndProfileImage() {
         
         if let id = message?.chatPartnerId() {
             

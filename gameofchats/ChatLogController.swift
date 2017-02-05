@@ -8,10 +8,9 @@
 
 import UIKit
 import Firebase
-import MobileCoreServices
-import AVFoundation
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
 
     var user: User? {
         didSet {
@@ -33,7 +32,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid)
         
-        userMessagesRef.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+        userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             //print(snapshot)
             
@@ -65,7 +64,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     })
                 }
                 
-                print("Msg: " + message.text!)
+                //print(message.text)
                 
             }, withCancel: nil)
             
@@ -94,24 +93,27 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
         
-        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
-        
+        //collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
+        //return messages.count
+        return 5
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
- 
- 		let message = messages[indexPath.item]
-        cell.textView.text = message.text
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
-        //cell.backgroundColor = UIColor.blue
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
+// 
+// 		let message = messages[indexPath.item]
+//        cell.textView.text = message.text
+        
+        cell.backgroundColor = UIColor.blue
         
         return cell
     }
@@ -186,7 +188,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     	let fromId = FIRAuth.auth()?.currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
 
-        let values: [String: Any] = ["Text": inputTextField.text!, "FromUid": fromId!, "ToUid": toId, "Timestamp": timestamp]
+        //let values: [String: Any] = ["Text": inputTextField.text!, "FromUid": fromId!, "ToUid": toId, "Timestamp": timestamp]
+        let values = ["text": inputTextField.text!, "ToUid": toId, "FromUid": fromId!, "Timestamp": timestamp] as [String : Any]
 //        childRef.updateChildValues(values)
 
         childRef.updateChildValues(values) { (error, ref) in
