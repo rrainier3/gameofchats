@@ -57,15 +57,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 message.timestamp = (dictionary["Timestamp"] as! NSNumber)
                 message.toId = (dictionary["ToUid"] as! String)
                 
+                if message.chatPartnerId() == self.user?.id {
+                    self.messages.append(message)
+                    
+                    DispatchQueue.main.async(execute: {
+                        self.collectionView?.reloadData()
+                    })
+                }
                 
-                self.messages.append(message)
-                
-                DispatchQueue.main.async(execute: {
-                    self.collectionView?.reloadData()
-                })
-                
-                
-                //print(message.text!)
+                print("Msg: " + message.text!)
                 
             }, withCancel: nil)
             
@@ -91,6 +91,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         //navigationItem.title = "Chat Log Controller"
         
         // check collectionView
+        collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
         
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
@@ -105,8 +106,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
  
+ 		let message = messages[indexPath.item]
+        cell.textView.text = message.text
+        
         //cell.backgroundColor = UIColor.blue
         
         return cell

@@ -15,14 +15,20 @@ class ChatMessageCell: UICollectionViewCell {
         let tv = UITextView()
         tv.text = "SAMPLE TEXT FOR NOW"
         tv.font = UIFont.systemFont(ofSize: 16)
+        tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = UIColor.red
-        
+        addSubview(textView)
+        // add x,y,w,h constraints
+        textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+            
     }
     
     required init?(coder aDecoder: NSCoder) {
