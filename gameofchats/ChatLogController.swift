@@ -51,10 +51,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 // potential of crashing if keys don't match
 
                 // message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
-                message.fromId = (dictionary["FromUid"] as! String)
+                message.FromUid = (dictionary["FromUid"] as! String)
                 message.text = dictionary["Text"] as! String?
-                message.timestamp = (dictionary["Timestamp"] as! NSNumber)
-                message.toId = (dictionary["ToUid"] as! String)
+                message.Timestamp = (dictionary["Timestamp"] as! NSNumber)
+                message.ToUid = (dictionary["ToUid"] as! String)
                 
                 if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)

@@ -55,20 +55,21 @@ class MessagesController: UITableViewController {
                 print(snapshot)
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
-                    let message = Message()
-                    // message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
-                    message.fromId = (dictionary["FromUid"] as! String)
-                    message.text = dictionary["Text"] as! String?
-                    message.timestamp = (dictionary["Timestamp"] as! NSNumber)
-                    message.toId = (dictionary["ToUid"] as! String)
+                    print(dictionary)
                     
-                    if let toId = message.toId {
+                    let message = Message()
+                    
+                    // Method: .setvaluesforkeys() will crash if the Firebase fields are not correctly mapped or sequenced in the definition of Message() class
+                    
+                    message.setValuesForKeys(dictionary)
+
+                    if let toId = message.ToUid {
                         self.messagesDictionary[toId] = message
                         
                         self.messages = Array(self.messagesDictionary.values)
                         self.messages.sort(by: {(message1, message2) -> Bool in
                             
-                            return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                            return (message1.Timestamp?.intValue)! > (message2.Timestamp?.intValue)!
                             
                         })
                         
@@ -134,6 +135,10 @@ class MessagesController: UITableViewController {
 //    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    	print("Total messages count: ")
+    	print(self.messages.count)
+        
         return self.messages.count
     }
     
