@@ -48,13 +48,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 let message = Message()
-                // potential of crashing if keys don't match
+                // potential of crashing if keys don't match :: HAS TO MAP TO CLASS
 
-                // message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
-                message.FromUid = (dictionary["FromUid"] as! String)
-                message.text = dictionary["Text"] as! String?
-                message.Timestamp = (dictionary["Timestamp"] as! NSNumber)
-                message.ToUid = (dictionary["ToUid"] as! String)
+                message.setValuesForKeys(dictionary)
+//                message.FromUid = (dictionary["FromUid"] as! String)
+//                message.text = dictionary["Text"] as! String?
+//                message.Timestamp = (dictionary["Timestamp"] as! NSNumber)
+//                message.ToUid = (dictionary["ToUid"] as! String)
                 
                 if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)
@@ -93,27 +93,27 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = .white
         
-        //collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        //collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
         setupInputComponents()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return messages.count
-        return 5
+        return messages.count
+        //return 5
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
-// 
-// 		let message = messages[indexPath.item]
-//        cell.textView.text = message.text
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
+ 
+ 		let message = messages[indexPath.item]
+        cell.textView.text = message.text
         
-        cell.backgroundColor = UIColor.blue
+        //cell.backgroundColor = UIColor.blue
         
         return cell
     }

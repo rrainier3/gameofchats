@@ -23,7 +23,7 @@ class ChatMessageCell: UICollectionViewCell {
         super.init(frame: frame)
         
         addSubview(textView)
-        // add x,y,w,h constraints
+        // add x,y,w,h iOS9 constraints
         textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
