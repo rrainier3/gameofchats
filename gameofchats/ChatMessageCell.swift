@@ -17,6 +17,7 @@ class ChatMessageCell: UICollectionViewCell {
         tv.font = UIFont.systemFont(ofSize: 16)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.backgroundColor = UIColor.clear
+        tv.textColor = UIColor.white
         return tv
     }()
     
@@ -41,9 +42,13 @@ class ChatMessageCell: UICollectionViewCell {
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
         // add x,y,w,h iOS9 constraints
-        textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        //textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        
+        textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
+        //textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         textView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
             
     }
