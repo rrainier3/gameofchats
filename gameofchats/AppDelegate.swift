@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
-//	Firebase 3 - How to Load Entire Chat Log per User (Ep 12)
+//	Firebase 3 - How to Create Chat Bubbles using Constraints (Ep 13)
 
 import UIKit
 import Firebase
