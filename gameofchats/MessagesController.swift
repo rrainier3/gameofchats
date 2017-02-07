@@ -1,5 +1,5 @@
 //
-//  MessagesController.swift		- USERS MESSAGES HISTORY SCREEN
+//  MessagesController.swift		- USERS' LATEST MESSAGES SCREEN
 //  gameofchats
 //
 //  Created by RayRainier on 1/18/17.
@@ -15,8 +15,6 @@ class MessagesController: UITableViewController {
 
 	var user : User?
     
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,7 +53,7 @@ class MessagesController: UITableViewController {
                 print(snapshot)
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
-                    print(dictionary)
+                    //print(dictionary)
                     
                     let message = Message()
                     
@@ -136,8 +134,7 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-    	print("Total messages count: ")
-    	print(self.messages.count)
+    	//print(self.messages.count)
         
         return self.messages.count
     }
@@ -163,8 +160,10 @@ class MessagesController: UITableViewController {
         guard let chatPartnerId = message.chatPartnerId() else {
             return
         }
+        
         let ref = FIRDatabase.database().reference().child("users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        
             print(snapshot)
             
             guard let dictionary = snapshot.value as? [String: AnyObject] else {

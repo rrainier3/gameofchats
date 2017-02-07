@@ -115,6 +115,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return cell
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
     	var height: CGFloat = 80
@@ -208,6 +212,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 print(error!)
                 return
             }
+            
+            // clear input field after SEND/RETURN key
+            self.inputTextField.text = nil
             
             let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!)
             
