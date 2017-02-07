@@ -108,6 +108,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
  		let message = messages[indexPath.item]
         cell.textView.text = message.text
         
+        // lets modify the bubbleView's width somehow?
+        
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 32
+        
         return cell
     }
     
