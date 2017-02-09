@@ -105,19 +105,37 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    // call this to avoid memleak
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func handleKeyboardWillHide(notification: NSNotification) {
+        
+        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
+        
         // let us init and hide keyboard (default)!
         containerViewBottomAnchor?.constant = 0
+        // keyboard animation
+        UIView.animate(withDuration: keyboardDuration!) {
+            self.view.layoutIfNeeded()
+        }
         
     }
     
     func handleKeyboardWillShow(notification: NSNotification) {
     
     	let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect
+        let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
+        
         
 			// let us move this input area up on top of keyboard!
         	containerViewBottomAnchor?.constant = -keyboardFrame!.height
-        
+        	// keyboard animation
+            UIView.animate(withDuration: keyboardDuration!) {
+                self.view.layoutIfNeeded()
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
