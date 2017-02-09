@@ -21,14 +21,26 @@ class ChatMessageCell: UICollectionViewCell {
         return tv
     }()
     
+    static let blueColor = UIColor(r: 0, g: 137, b: 249)
+    
     let bubbleView: UIView = {
         
         let view = UIView()
-        view.backgroundColor = UIColor(r: 0, g: 137, b: 249)
+        view.backgroundColor = blueColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         return view
+    }()
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "nedstark")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     var bubbleWidthAnchor: NSLayoutConstraint?
@@ -38,6 +50,14 @@ class ChatMessageCell: UICollectionViewCell {
         
         addSubview(bubbleView)
         addSubview(textView)
+        addSubview(profileImageView)
+        
+        // add x,y,w,h iOS9 constraints
+        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        
         
         // add x,y,w,h iOS9 constraints
         bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true

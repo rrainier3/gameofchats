@@ -108,11 +108,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
  		let message = messages[indexPath.item]
         cell.textView.text = message.text
         
+		setupCell(cell: cell, message: message)
+        
         // lets modify the bubbleView's width somehow?
         
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 32
         
         return cell
+    }
+    
+    private func setupCell(cell: ChatMessageCell, message: Message) {
+        if message.FromUid == FIRAuth.auth()?.currentUser?.uid {
+            // outgoing blue
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.textView.textColor = UIColor.white
+        } else {
+            // incoming gray
+            cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
+            cell.textView.textColor = UIColor.black
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
