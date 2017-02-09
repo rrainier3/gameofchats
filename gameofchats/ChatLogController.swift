@@ -90,13 +90,27 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
 /*
+//		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
         setupInputComponents()
         setupKeyboardObservers()
 */
-        // Implementing another approach on keyboard handling
-        // via inputAccessoryView
+
+		// IMPLEMENTING INPUTACCESSORYVIEW OVERRIDE
+    }
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            // return inputContainerView from lazy var above
+            // if code below was placed here - the textField loses
+            // reference so this is the fix
+            return inputContainerView
+        }
     }
 
+	// this is needed or else inputAccessoryView will not appear!
+	override var canBecomeFirstResponder: Bool { return true }
+    
+    
 	lazy var inputContainerView: UIView = {
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
@@ -150,27 +164,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return containerView
     }()
     
-    override var inputAccessoryView: UIView? {
-        get {
-        	// return inputContainerView from lazy var above
-            // if code above was placed here - the textField loses
-            // reference so this is the fix
-            return inputContainerView
-        }
-    }
-    
+
+    //		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
+
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    //		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
+
     // call this to avoid memleak
     override func viewDidDisappear(_ animated: Bool) {
         
         NotificationCenter.default.removeObserver(self)
     }
     
+    //		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
+
     func handleKeyboardWillHide(notification: NSNotification) {
         
         let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
@@ -184,6 +196,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
     }
     
+    //		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
+
     func handleKeyboardWillShow(notification: NSNotification) {
     
     	let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect
@@ -273,6 +287,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     var containerViewBottomAnchor: NSLayoutConstraint?
     
+
+    //		NOT CALLED DUE TO INPUTACCESSORYVIEW IMPLEMENT
+
     func setupInputComponents() {
         let containerView = UIView()
         
