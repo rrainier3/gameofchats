@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
-//	Firebase 3 - Gray Chat Bubbles and Main Messages Bug Fix (Ep 14)
+//	Firebase 3 - How to Implement Interactive Keyboard using inputAccessoryView (Ep 15)
 
 import UIKit
 import Firebase
