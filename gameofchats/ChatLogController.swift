@@ -17,7 +17,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
             navigationItem.title = user?.name
             
-            observeMessages()		// We are observing this user's messages!
+            observeMessages()		// We are observing this user's chat!
             
         }
     }
