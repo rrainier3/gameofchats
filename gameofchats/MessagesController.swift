@@ -28,7 +28,6 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-//        observeMessages()
 
     }
     
@@ -72,11 +71,9 @@ class MessagesController: UITableViewController {
                         })
                         
                     }
-                    // this will crash bec of background thread, so lets call this on
-                    // dispatch_asynch main thread
-                    DispatchQueue.main.async(execute: {
-                    	self.tableView.reloadData()
-                    })
+			
+            		self.timer?.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
                     
                 }
                 
@@ -85,52 +82,17 @@ class MessagesController: UITableViewController {
         }, withCancel: nil)
     }
 
-//	func observeMessages() {
-//        
-//        let ref = FIRDatabase.database().reference().child("messages")
-//        ref.observe(.childAdded, with: { (snapshot) in
-//        
-//        	if let dictionary = snapshot.value as? [String: AnyObject] {
-//                
-//                let message = Message()
-////                message.setValuesForKeys(dictionary)  <-- crashing : below is safer ->
-//				message.fromId = (dictionary["FromUid"] as! String)
-//                message.text = dictionary["Text"] as! String?
-//                message.timestamp = (dictionary["Timestamp"] as! NSNumber)
-//                message.toId = (dictionary["ToUid"] as! String)
-//                
-////                self.messages.append(message)
-//
-//				if let toId = message.toId {
-//                	self.messagesDictionary[toId] = message
-//                    
-//                    self.messages = Array(self.messagesDictionary.values)
-//                    self.messages.sort(by: {(message1, message2) -> Bool in
-//                    
-//                    	return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
-//                        
-//                    })
-//                
-//                }
-//                // this will crash bec of background thread, so lets call this on
-//                // dispatch_asynch main thread
-//                DispatchQueue.main.async(execute: {
-//                    self.tableView.reloadData()
-//                })
-///*
-//	Here is Kelvin Fok solution for above DispatchQueue not working -> sometimes :(
-//
-//                 OperationQueue.main.addOperation {
-//                 	self.tableView.reloadData()
-//                 }
-//*/
-////               print(message.text!)
-//                
-//            }
-//            
-//        }, withCancel: nil)
-//        
-//    }
+	var timer: Timer?
+    
+    func handleReloadTable() {
+        // this will crash bec of background thread, so lets call this on
+        // dispatch_asynch main thread
+        DispatchQueue.main.async(execute: {
+        	print("We reloaded the table!")
+            self.tableView.reloadData()
+        })
+        
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
@@ -177,34 +139,6 @@ class MessagesController: UITableViewController {
             
         }, withCancel: nil)
     }
-    
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        
-//        let message = messages[indexPath.row]
-//        
-//        guard let chatPartnerId = message.chatPartnerId() else {
-//            return
-//        }
-//        
-//        let ref = FIRDatabase.database().reference().child("users").child(chatPartnerId)
-//        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            print(snapshot)		// trace and check chatPartnerId User
-//            
-//            guard let dictionary = snapshot.value as? [String: AnyObject]
-//            	else {
-//                    return
-//            }
-//            
-//            let user = User()
-//            
-//            user.id = chatPartnerId
-//            user.setValuesForKeys(dictionary)
-//            self.showChatControllerForUser(user: user)
-//            
-//        }, withCancel: nil)
-//        
-//    }
     
     func handleNewMessage() {
 		let newMessageController = NewMessageController()
@@ -329,6 +263,7 @@ class MessagesController: UITableViewController {
         //
         // collectionViewLayout param is needed bec the call crashes because the target UICollectionViewController expects layout
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        
         navigationController?.pushViewController(chatLogController, animated: true)
         
     }
