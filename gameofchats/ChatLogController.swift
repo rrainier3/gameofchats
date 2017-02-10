@@ -216,7 +216,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
                     
-                    self.sendMessageWithImageUrl(imageUrl: String)
+                    self.sendMessageWithImageUrl(imageUrl: imageUrl)
                 }
             })
         }
@@ -270,9 +270,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
 		setupCell(cell: cell, message: message)
         
-        // lets modify the bubbleView's width somehow?
-        
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: message.text!).width + 32
+        if let text = message.text {
+            // lets modify the bubbleView's width somehow?
+            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
+        }
+
         
         return cell
     }
@@ -300,6 +302,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
+        }
+        
+        if let messageImageUrl = message.imageUrl {
+            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageUrl)
+            cell.messageImageView.isHidden = false
+            cell.bubbleView.backgroundColor = UIColor.clear
+        } else {
+            cell.messageImageView.isHidden = true
         }
     }
     
@@ -333,6 +343,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
     // handle Send Button onclick event
     func handleSend() {
+    
+    	// fix to not accept blanks!
+    	guard let input = inputTextField.text, input.characters.count > 0 else { return }
     
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()

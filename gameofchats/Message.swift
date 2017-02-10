@@ -15,6 +15,8 @@ class Message: NSObject {
     var Timestamp: NSNumber?
     var ToUid: String?
     var text: String?
+    
+    var imageUrl: String?
 
 /*	THIS WAS NOT PROPERLY MAPPED TO FIREBASE snapshot
     var fromId: String?
