@@ -112,13 +112,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.white
-
-/*
-        let textField = UITextField()
-        textField.placeholder = "Enter some text..."
-        containerView.addSubview(textField)
-        textField.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
-*/
         
         // create the send button
         let sendButton = UIButton(type: .system)
