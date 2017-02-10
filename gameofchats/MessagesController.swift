@@ -66,7 +66,7 @@ class MessagesController: UITableViewController {
         // Observer 2
         messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            print(snapshot)
+            //print(snapshot)
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
                 //print(dictionary)
@@ -93,10 +93,10 @@ class MessagesController: UITableViewController {
     private func attemptReloadOfTable() {
         
         self.timer?.invalidate()
-        print("we just cancelled our timer")
+        //print("we just cancelled our timer")
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-        print("schedule a table reload in 0.1 sec")
+        //print("schedule a table reload in 0.1 sec")
         
     }
 
@@ -113,7 +113,7 @@ class MessagesController: UITableViewController {
     
         // dispatch_asynch main thread
         DispatchQueue.main.async(execute: {
-        	print("We reloaded the table!")
+        	//print("We reloaded the table!")
             self.tableView.reloadData()
         })
         
@@ -151,7 +151,7 @@ class MessagesController: UITableViewController {
         let ref = FIRDatabase.database().reference().child("users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
         
-            print(snapshot)
+            //print(snapshot)
             
             guard let dictionary = snapshot.value as? [String: AnyObject] else {
                 return

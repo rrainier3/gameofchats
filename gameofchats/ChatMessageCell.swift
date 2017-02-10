@@ -74,9 +74,7 @@ class ChatMessageCell: UICollectionViewCell {
         bubbleWidthAnchor?.isActive = true
         
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        
-        // add x,y,w,h iOS9 constraints
-        //textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+    
         
         textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         textView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
