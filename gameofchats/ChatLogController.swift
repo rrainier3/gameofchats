@@ -210,8 +210,46 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 if error != nil {
                     print("Failed to upload image: ", error!)
                 }
+                
+                // On Success
+                print(metadata?.downloadURL()?.absoluteString as Any)
+                
+                if let imageUrl = metadata?.downloadURL()?.absoluteString {
+                    
+                    self.sendMessageWithImageUrl(imageUrl: String)
+                }
             })
         }
+    }
+    
+    private func sendMessageWithImageUrl(imageUrl: String) {
+        let ref = FIRDatabase.database().reference().child("messages")
+        let childRef = ref.childByAutoId()
+        
+        let toId = user!.id!
+        let fromId = FIRAuth.auth()?.currentUser?.uid
+        let timestamp = NSDate().timeIntervalSince1970
+        
+        let values = ["imageUrl": imageUrl, "ToUid": toId, "FromUid": fromId!, "Timestamp": timestamp] as [String : Any]
+        
+        childRef.updateChildValues(values) { (error, ref) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            // clear input field after SEND/RETURN key
+            self.inputTextField.text = nil
+            
+            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId)
+            
+            let messageId = childRef.key
+            userMessagesRef.updateChildValues([messageId: 1])
+            
+            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId!)
+            recipientUserMessagesRef.updateChildValues([messageId: 1])
+        }
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
