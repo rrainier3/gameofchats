@@ -109,8 +109,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         // create uploadImage icon
         let uploadImageView = UIImageView()
+        uploadImageView.isUserInteractionEnabled = true
         uploadImageView.image = UIImage(named: "upload_image_icon")
         uploadImageView.translatesAutoresizingMaskIntoConstraints = false
+        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
         
 		containerView.addSubview(uploadImageView)
         
@@ -160,6 +162,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return containerView
     }()
     
+    func handleUploadTap() {
+        
+        let imagePickerController = UIImagePickerController()
+        
+        present(imagePickerController, animated: true, completion: nil)
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
