@@ -107,6 +107,19 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
         containerView.backgroundColor = UIColor.white
         
+        // create uploadImage icon
+        let uploadImageView = UIImageView()
+        uploadImageView.image = UIImage(named: "upload_image_icon")
+        uploadImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+		containerView.addSubview(uploadImageView)
+        
+        // x,y,w,h
+        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
         // create the send button
         let sendButton = UIButton(type: .system)
         sendButton.setTitle("Send", for: .normal)
@@ -127,7 +140,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         containerView.addSubview(self.inputTextField)
         
         // x,y,w,h
-        self.inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
         self.inputTextField.bottomAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 24).isActive = true
         self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
         self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
