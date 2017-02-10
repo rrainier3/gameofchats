@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var user: User? {
         didSet {
@@ -166,7 +166,57 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         let imagePickerController = UIImagePickerController()
         
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        
         present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    
+        var selectedImageFromPicker: UIImage?
+        
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            
+            selectedImageFromPicker = editedImage
+            
+            //print(editedImage)
+            
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            
+            selectedImageFromPicker = originalImage
+            
+            //print((originalImage)
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+
+			uploadToFirebaseStorageUsingImage(image: selectedImage)
+        }
+        
+        dismiss(animated: true, completion: nil)
+
+    }
+    
+    private func uploadToFirebaseStorageUsingImage(image: UIImage) {
+    
+    	let imageName = NSUUID().uuidString
+        let ref = FIRStorage.storage().reference().child("message_images").child(imageName)
+        
+        if let uploadData = UIImageJPEGRepresentation(image, 0.2) {
+            ref.put(uploadData, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Failed to upload image: ", error!)
+                }
+            })
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    
+        dismiss(animated: true, completion: nil)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
