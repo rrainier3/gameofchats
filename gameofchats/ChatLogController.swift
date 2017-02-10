@@ -52,6 +52,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 
                 message.setValuesForKeys(dictionary)
                 
+                // do we need to attempt filtering anymore? no :)
+                self.messages.append(message)
+                
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
                 })
