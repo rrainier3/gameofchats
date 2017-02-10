@@ -26,11 +26,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func observeMessages() {
         
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.id else {
             return
         }
         
-        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid)
+        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(toId)
         
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
@@ -52,17 +52,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 
                 message.setValuesForKeys(dictionary)
                 
-                if message.chatPartnerId() == self.user?.id {
-                    self.messages.append(message)
-                    
-                    DispatchQueue.main.async(execute: {
-                        self.collectionView?.reloadData()
-                    })
-                }
+                DispatchQueue.main.async(execute: {
+                    self.collectionView?.reloadData()
+                })
                 
-                //print(message.text)
-                
-            }, withCancel: nil)
+        	}, withCancel: nil)
             
         }, withCancel: nil)
     }
@@ -371,12 +365,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             // clear input field after SEND/RETURN key
             self.inputTextField.text = nil
             
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!)
+            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId)
             
             let messageId = childRef.key
             userMessagesRef.updateChildValues([messageId: 1])
             
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId)
+            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId!)
             recipientUserMessagesRef.updateChildValues([messageId: 1])
         }
     }

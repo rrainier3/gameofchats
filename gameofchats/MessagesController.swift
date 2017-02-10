@@ -42,53 +42,75 @@ class MessagesController: UITableViewController {
         
         let ref = FIRDatabase.database().reference().child("user-messages").child(uid)
         
+        // Observer 1
         ref.observe(.childAdded, with: { (snapshot) in
-            
-            let messageId = snapshot.key
-            let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
-            
-            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-                print(snapshot)
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    
-                    //print(dictionary)
-                    
-                    let message = Message()
-                    
-                    // Method: .setvaluesforkeys() will crash if the Firebase fields are not correctly mapped or sequenced in the definition of Message() class
-                    
-                    message.setValuesForKeys(dictionary)
+        
+        	// Observer 1b - one level deeper
+        	let userId = snapshot.key
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
+                
+                let messageId = snapshot.key
+                self.fetchMessageWithMessageId(messageId: messageId)
 
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messagesDictionary[chatPartnerId] = message
-                        
-                        self.messages = Array(self.messagesDictionary.values)
-                        self.messages.sort(by: {(message1, message2) -> Bool in
-                            
-                            return (message1.Timestamp?.intValue)! > (message2.Timestamp?.intValue)!
-                            
-                        })
-                        
-                    }
-			
-            		self.timer?.invalidate()
-                    print("we just cancelled our timer")
+                
+            }, withCancel: nil)			// end of Observer 1b
+            
+        }, withCancel: nil)				// end of Observer 1
+        
+    }				// end of observeUserMessages()
+    
+    private func fetchMessageWithMessageId(messageId: String) {
+    
+        let messagesReference = FIRDatabase.database().reference().child("messages").child(messageId)
+        
+        // Observer 2
+        messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            print(snapshot)
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                
+                //print(dictionary)
+                
+                let message = Message()
+                
+                // Method: .setvaluesforkeys() will crash if the Firebase fields are not correctly mapped or sequenced in the definition of Message() class
+                
+                message.setValuesForKeys(dictionary)
+                
+                if let chatPartnerId = message.chatPartnerId() {
                     
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                    print("schedule a table reload in 0.1 sec")
+                    self.messagesDictionary[chatPartnerId] = message
                     
                 }
                 
-            }, withCancel: nil)
+                self.attemptReloadOfTable()
+                
+            }
             
-        }, withCancel: nil)
+        }, withCancel: nil)			// end of Observer 2
+    }
+    
+    private func attemptReloadOfTable() {
+        
+        self.timer?.invalidate()
+        print("we just cancelled our timer")
+        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+        print("schedule a table reload in 0.1 sec")
+        
     }
 
 	var timer: Timer?
     
     func handleReloadTable() {
-        // this will crash bec of background thread, so lets call this on
+    
+        self.messages = Array(self.messagesDictionary.values)
+        self.messages.sort(by: {(message1, message2) -> Bool in
+            
+            return (message1.Timestamp?.intValue)! > (message2.Timestamp?.intValue)!
+            
+        })
+    
         // dispatch_asynch main thread
         DispatchQueue.main.async(execute: {
         	print("We reloaded the table!")
