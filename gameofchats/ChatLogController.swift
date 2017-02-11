@@ -88,10 +88,32 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.backgroundColor = .white
         
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        setupKeyboardObserver()
 
-		// Implementing inputAccessoryView Override below:
+		// Implementing inputAccessoryView:UIView Override below:
+    }
+
+    func setupKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: .UIKeyboardDidShow, object: nil)
     }
     
+    func handleKeyboardDidShow() {
+
+    	if messages.count > 0 {
+            let indexPath = NSIndexPath(item: messages.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
+        }
+        
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+ 
     override var inputAccessoryView: UIView? {
         get {
             // return inputContainerView from lazy var above
