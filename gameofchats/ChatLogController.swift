@@ -226,6 +226,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
+        
+        let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
+            
+        sendMessageWithProperties(properties: properties)
+    }
+    
+    private func sendMessageWithProperties(properties: [String: Any]) {
+    
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
@@ -233,7 +241,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let fromId = FIRAuth.auth()?.currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
         
-        let values = ["ToUid": toId, "FromUid": fromId!, "timestamp": timestamp, "imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height] as [String : Any]
+        var values: [String: Any] = ["ToUid": toId, "FromUid": fromId!, "timestamp": timestamp]
+        
+        // Append properties dictionary onto values[] array
+        // key $0, value $1
+        properties.forEach {(values[$0] = $1)}
         
         childRef.updateChildValues(values) { (error, ref) in
             if error != nil {
@@ -253,6 +265,23 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             recipientUserMessagesRef.updateChildValues([messageId: 1])
         }
         
+    }
+    
+    // handle Send Button onclick event
+    func handleSend() {
+        
+        // fix to not accept blanks!
+        guard let input = inputTextField.text, input.characters.count > 0 else { return }
+        
+        let properties = ["text": inputTextField.text!]
+        
+        sendMessageWithProperties(properties: properties)
+        
+	}
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        handleSend()
+        return true
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -355,7 +384,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
         
     // handle Send Button onclick event
-    func handleSend() {
+    func handleSend2() {
     
     	// fix to not accept blanks!
     	guard let input = inputTextField.text, input.characters.count > 0 else { return }
@@ -388,9 +417,5 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        handleSend()
-        return true
-    }
     
 }
