@@ -71,11 +71,11 @@ class MessagesController: UITableViewController {
                 
                 //print(dictionary)
                 
-                let message = Message()
+                let message = Message(dictionary: dictionary)
                 
                 // Method: .setvaluesforkeys() will crash if the Firebase fields are not correctly mapped or sequenced in the definition of Message() class
                 
-                message.setValuesForKeys(dictionary)
+//                message.setValuesForKeys(dictionary)
                 
                 if let chatPartnerId = message.chatPartnerId() {
                     

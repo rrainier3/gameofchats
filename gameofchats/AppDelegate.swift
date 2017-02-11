@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
-//	Firebase 3 - How to Send Image Messages (Ep 17)
+//	Firebase 3 - How to Fix Image Bubble Sizing (Ep 18)
 
 import UIKit
 import Firebase

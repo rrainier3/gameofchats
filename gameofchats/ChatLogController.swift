@@ -46,14 +46,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 guard let dictionary = snapshot.value as? [String: AnyObject] else {
                     return
                 }
-                
+
+/*
+		Avoiding crashes with modified Message::class
+        
                 let message = Message()
                 // potential of crashing if keys don't match :: HAS TO MAP TO CLASS
 
                 message.setValuesForKeys(dictionary)
-                
-                // do we need to attempt filtering anymore? no :)
-                self.messages.append(message)
+*/
+                // Note -> Message(dictionary: dictionary) new arg1
+                self.messages.append(Message(dictionary: dictionary))
                 
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
@@ -216,13 +219,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
                     
-                    self.sendMessageWithImageUrl(imageUrl: imageUrl)
+                    self.sendMessageWithImageUrl(imageUrl: imageUrl, image: image)
                 }
             })
         }
     }
     
-    private func sendMessageWithImageUrl(imageUrl: String) {
+    private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
         let ref = FIRDatabase.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
@@ -230,7 +233,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let fromId = FIRAuth.auth()?.currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
         
-        let values = ["imageUrl": imageUrl, "ToUid": toId, "FromUid": fromId!, "Timestamp": timestamp] as [String : Any]
+        let values = ["ToUid": toId, "FromUid": fromId!, "timestamp": timestamp, "imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height] as [String : Any]
         
         childRef.updateChildValues(values) { (error, ref) in
             if error != nil {
@@ -273,6 +276,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if let text = message.text {
             // lets modify the bubbleView's width somehow?
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
+        } else if message.imageUrl != nil {
+            // fall here if its an image message
+            cell.bubbleWidthAnchor?.constant = 200
         }
 
         
@@ -321,9 +327,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
     	var height: CGFloat = 80
-        // get estimated height somehow??
-        if let text = messages[indexPath.item].text {
+        
+        let message = messages[indexPath.item]
+        if let text = message.text {
             height = estimateFrameForText(text: text).height + 20
+        } else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue {
+            
+            // h1/w1 = h2/w2
+            // solve for h1
+            // h1 = h2 / w2 * w1	note: 200 = bubbleWidth
+            
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
         
         // we replaced view.frame.width to prevent landscape centering of text
@@ -331,7 +345,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 		let width = UIScreen.main.bounds.width
         
         return CGSize(width: width, height: height)
-        //return CGSize(width: view.frame.width, height: height)
     }
     
     private func estimateFrameForText(text: String) -> CGRect {

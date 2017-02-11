@@ -17,6 +17,8 @@ class Message: NSObject {
     var text: String?
     
     var imageUrl: String?
+    var imageHeight: NSNumber?
+    var imageWidth: NSNumber?
 
 /*	THIS WAS NOT PROPERLY MAPPED TO FIREBASE snapshot
     var fromId: String?
@@ -28,14 +30,21 @@ class Message: NSObject {
     func chatPartnerId() -> String? {
     
     	return FromUid == FIRAuth.auth()?.currentUser?.uid ? ToUid : FromUid
-
-// Let's implement a one line code above
-//
-//        if fromId == FIRAuth.auth()?.currentUser?.uid {
-//            return toId
-//        } else {
-//            return fromId
-//        }
+    }
+/*
+	Introduce new init() to avoid crashing due to adding props
+*/
+	init(dictionary: [String: AnyObject]) {
+        super.init()
+        
+        FromUid = dictionary["FromUid"] as? String
+    	Timestamp = dictionary["Timestamp"] as? NSNumber
+        ToUid = dictionary["ToUid"] as? String
+        text = dictionary["text"] as? String
+        imageUrl = dictionary["imageUrl"] as? String
+        imageHeight = dictionary["imageHeight"] as? NSNumber
+        imageWidth = dictionary["imageWidth"] as? NSNumber
+        
     }
     
 }
