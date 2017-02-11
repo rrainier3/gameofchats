@@ -382,40 +382,5 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
     }
-        
-    // handle Send Button onclick event
-    func handleSend2() {
-    
-    	// fix to not accept blanks!
-    	guard let input = inputTextField.text, input.characters.count > 0 else { return }
-    
-        let ref = FIRDatabase.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        
-        let toId = user!.id!
-    	let fromId = FIRAuth.auth()?.currentUser?.uid
-        let timestamp = NSDate().timeIntervalSince1970
-
-        let values = ["text": inputTextField.text!, "ToUid": toId, "FromUid": fromId!, "Timestamp": timestamp] as [String : Any]
-
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            // clear input field after SEND/RETURN key
-            self.inputTextField.text = nil
-            
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId)
-            
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
-            
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId!)
-            recipientUserMessagesRef.updateChildValues([messageId: 1])
-        }
-    }
-    
     
 }
