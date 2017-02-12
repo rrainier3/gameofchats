@@ -8,7 +8,8 @@
 
 import UIKit
 import Firebase
-
+import MobileCoreServices
+import AVFoundation
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -193,6 +194,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         imagePickerController.allowsEditing = true
         imagePickerController.delegate = self
+        imagePickerController.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         
         present(imagePickerController, animated: true, completion: nil)
     }
