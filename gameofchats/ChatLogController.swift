@@ -202,10 +202,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     
     	if let videoUrl = info[UIImagePickerControllerMediaURL] {
-            print("here's the file url: ", videoUrl)
+
+			// we selected a video!
             
             let filename = NSUUID().uuidString
-            FIRStorage.storage().reference().child(filename).putFile(videoUrl as! URL, metadata: nil, completion: {(metadata, error) in
+            
+            // lets store video in message_videos!
+            FIRStorage.storage().reference().child("message_videos").child(filename).putFile(videoUrl as! URL, metadata: nil, completion: {(metadata, error) in
             
             	if error != nil {
                     print("Failed to upload video:", error!)
@@ -217,11 +220,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
             
             })
-            return
+            
+        } else {
+            // we selected an image!
+			handleImageSelectedForInfo(info: info as [String : AnyObject])
         }
     
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func handleImageSelectedForInfo(info: [String: AnyObject]) {
+
         var selectedImageFromPicker: UIImage?
-        
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
             
@@ -237,12 +247,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
         
         if let selectedImage = selectedImageFromPicker {
-
-			uploadToFirebaseStorageUsingImage(image: selectedImage)
+            
+            uploadToFirebaseStorageUsingImage(image: selectedImage)
         }
-        
-        dismiss(animated: true, completion: nil)
-
     }
     
     private func uploadToFirebaseStorageUsingImage(image: UIImage) {
