@@ -217,7 +217,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     private func handleVideoSelectedForUrl(url: NSURL) {
 
-        let filename = NSUUID().uuidString
+        let filename = NSUUID().uuidString + ".mp4"
         
         // lets store video in message_videos!
         let uploadTask = FIRStorage.storage().reference().child("message_videos").child(filename).putFile(url as URL, metadata: nil, completion: {(metadata, error) in
@@ -227,8 +227,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 return
             }
             
-            if let storageUrl = metadata?.downloadURL()?.absoluteString {
-                print(storageUrl)
+            if let videoUrl = metadata?.downloadURL()?.absoluteString {
+//                let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
+                
+                let properties: [String: AnyObject] = ["videoUrl": videoUrl as AnyObject]
+                self.sendMessageWithProperties(properties: properties)
             }
             
         })
