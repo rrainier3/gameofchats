@@ -201,6 +201,25 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     
+    	if let videoUrl = info[UIImagePickerControllerMediaURL] {
+            print("here's the file url: ", videoUrl)
+            
+            let filename = NSUUID().uuidString
+            FIRStorage.storage().reference().child(filename).putFile(videoUrl as! URL, metadata: nil, completion: {(metadata, error) in
+            
+            	if error != nil {
+                    print("Failed to upload video:", error!)
+                    return
+                }
+            
+            	if let storageUrl = metadata?.downloadURL()?.absoluteString {
+                    print(storageUrl)
+                }
+            
+            })
+            return
+        }
+    
         var selectedImageFromPicker: UIImage?
         
         
