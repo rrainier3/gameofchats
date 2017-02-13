@@ -204,29 +204,44 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     	if let videoUrl = info[UIImagePickerControllerMediaURL] {
 
 			// we selected a video!
-            
-            let filename = NSUUID().uuidString
-            
-            // lets store video in message_videos!
-            FIRStorage.storage().reference().child("message_videos").child(filename).putFile(videoUrl as! URL, metadata: nil, completion: {(metadata, error) in
-            
-            	if error != nil {
-                    print("Failed to upload video:", error!)
-                    return
-                }
-            
-            	if let storageUrl = metadata?.downloadURL()?.absoluteString {
-                    print(storageUrl)
-                }
-            
-            })
+            handleVideoSelectedForUrl(url: videoUrl as! NSURL)
             
         } else {
+        
             // we selected an image!
 			handleImageSelectedForInfo(info: info as [String : AnyObject])
         }
     
         dismiss(animated: true, completion: nil)
+    }
+    
+    private func handleVideoSelectedForUrl(url: NSURL) {
+
+        let filename = NSUUID().uuidString
+        
+        // lets store video in message_videos!
+        let uploadTask = FIRStorage.storage().reference().child("message_videos").child(filename).putFile(url as URL, metadata: nil, completion: {(metadata, error) in
+            
+            if error != nil {
+                print("Failed to upload video:", error!)
+                return
+            }
+            
+            if let storageUrl = metadata?.downloadURL()?.absoluteString {
+                print(storageUrl)
+            }
+            
+        })
+        
+        uploadTask.observe(.progress) { (snapshot) in
+        	if let completedUnitCount = snapshot.progress?.completedUnitCount {
+                self.navigationItem.title = String(completedUnitCount)
+            }
+        }
+        
+        uploadTask.observe(.success) { (snapshot) in
+            self.navigationItem.title = self.user?.name
+        }
     }
     
     private func handleImageSelectedForInfo(info: [String: AnyObject]) {
