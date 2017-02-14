@@ -78,6 +78,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         return textField
         
     }()
+    // create the progressView for upload
+    lazy var progressView: UIProgressView = {
+    
+    	let progressView = UIProgressView()
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
+        
+        return progressView
+    }()
+
     
     let cellId = "cellId"
     
@@ -184,6 +194,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        // create the progressView
+        containerView.addSubview(self.progressView)
+        
+        // x,y,w,h
+        self.progressView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        self.progressView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        self.progressView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        self.progressView.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         return containerView
     }()
@@ -242,13 +260,27 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         })
         
         uploadTask.observe(.progress) { (snapshot) in
+        
+        	self.progressView.isHidden = false
+            self.progressView.setProgress(self.progressView.progress + 0.1, animated: true)
+        	
+            // This can now be commented out with our UIProgressView impl
+/*
         	if let completedUnitCount = snapshot.progress?.completedUnitCount {
                 self.navigationItem.title = String(completedUnitCount)
             }
+*/
         }
         
         uploadTask.observe(.success) { (snapshot) in
+        
+        	self.progressView.isHidden = true
+            //self.progressView.removeFromSuperview() -- don't know if we need to
+
+/*			This can now be commented out with our UIProgressView impl
+
             self.navigationItem.title = self.user?.name
+*/
         }
     }
     
