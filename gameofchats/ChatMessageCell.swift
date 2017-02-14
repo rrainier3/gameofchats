@@ -40,21 +40,33 @@ class ChatMessageCell: UICollectionViewCell {
         return button
     }()
     
+    var playerLayer: AVPlayerLayer?
+    var player: AVPlayer?
+    
     func handlePlay() {
         if let url = NSURL(string: (message?.videoUrl)!) {
             
-            let player = AVPlayer(url: url as URL)
+            player = AVPlayer(url: url as URL)
             
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = bubbleView.bounds  // bec .frame display is off
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = bubbleView.bounds  // bec .frame display is off
             
-            bubbleView.layer.addSublayer(playerLayer)
+            bubbleView.layer.addSublayer(playerLayer!)
             
-            player.play()
+            player?.play()
             
             print("Attempting to play video .....")
             
         }
+    }
+    
+    // Cleanup the AVPlayerLayer mess in the UICollectionView scroll
+    override func prepareForReuse() {
+    	super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        player?.pause()
+        
+    // stop/pause the video when scrolling or reusing cell otherwise video still has audio running in the background
     }
     
     static let blueColor = UIColor(r: 0, g: 137, b: 249)
