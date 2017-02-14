@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.	Updated: 01232017 EP-7
 //
-//	Firebase 3 - How to Send Videos (Ep 20)
+//	Firebase 3 - How to Play Videos with AVPlayer (Ep 21)
 
 import UIKit
 import Firebase
