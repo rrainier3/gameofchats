@@ -24,15 +24,22 @@ class ChatMessageCell: UICollectionViewCell {
         return tv
     }()
     
-    let playButton: UIButton = {
+    lazy var playButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setTitle("Play Video", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "play")
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.white
+        
+        button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
+        
         return button
     }()
+    
+    func handlePlay() {
+        print("Play video!")
+    }
     
     static let blueColor = UIColor(r: 0, g: 137, b: 249)
     
