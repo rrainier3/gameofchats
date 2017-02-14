@@ -229,13 +229,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             if let videoUrl = metadata?.downloadURL()?.absoluteString {
                 
-            	if let thumbnailImage = self.thumbnailImageForFileUrl(fileUrl: url) {
-					self.uploadToFirebaseStorageUsingImage(image: thumbnailImage, completion: { (imageUrl) in
+                if let thumbnailImage = self.thumbnailImageForFileUrl(fileUrl: url) {
                     
-                        let properties: [String: Any] = [ "imageUrl": imageUrl,"imageWidth": thumbnailImage.size.width, "imageHeight": thumbnailImage.size.height, "videoUrl": videoUrl]
-                        
+                    self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
+                        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": thumbnailImage.size.width as AnyObject, "imageHeight": thumbnailImage.size.height as AnyObject, "videoUrl": videoUrl as AnyObject]
                         self.sendMessageWithProperties(properties: properties)
-                
+                        
                     })
                 }
             }
@@ -288,7 +287,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if let selectedImage = selectedImageFromPicker {
             
-            uploadToFirebaseStorageUsingImage(image: selectedImage, completion: { (imageUrl) in
+            uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
                 
                 self.sendMessageWithImageUrl(imageUrl: imageUrl, image: selectedImage)
             })
@@ -296,9 +295,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
         }
     }
+/*
+     func hardProcessingWithString(input: String, completion: (result: String) -> Void) {
+     ...
+     completion("we finished!")
+     }
+*/
     
-    private func uploadToFirebaseStorageUsingImage(image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
-    
+    fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+       
     	let imageName = NSUUID().uuidString
         let ref = FIRStorage.storage().reference().child("message_images").child(imageName)
         
