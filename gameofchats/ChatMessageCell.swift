@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ChatMessageCell: UICollectionViewCell {
 
 	var chatLogController = ChatLogController()
+    
+    var message: Message?
 
 	let textView: UITextView = {
         
@@ -38,7 +41,20 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     func handlePlay() {
-        print("Play video!")
+        if let url = NSURL(string: (message?.videoUrl)!) {
+            
+            let player = AVPlayer(url: url as URL)
+            
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = bubbleView.bounds  // bec .frame display is off
+            
+            bubbleView.layer.addSublayer(playerLayer)
+            
+            player.play()
+            
+            print("Attempting to play video .....")
+            
+        }
     }
     
     static let blueColor = UIColor(r: 0, g: 137, b: 249)
