@@ -68,9 +68,6 @@ class NewMessageController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // let us use a hack for now because we need to dequeue our cells for memory efficiency
-        // let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
-        
         // cell is giving UITableViewCell so we have to cast it to UserCell!
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
@@ -101,12 +98,13 @@ class NewMessageController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true, completion: {
         
-        	print("Dismiss Completed")
-            // Goto Chat Log Controller!
-            //self.messagesController?.showChatController()
+        	print("Dismiss Completed going to ChatLogController")
             
             // Goto the improved Chat Log Controller!!            
             let user = self.users[indexPath.row]
+            
+            print(user.name!)
+            
             self.messagesController?.showChatControllerForUser(user: user)
             
         })

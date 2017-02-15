@@ -18,7 +18,7 @@ class UserCell: UITableViewCell {
             
             detailTextLabel?.text = message?.text
             
-            if let seconds = message?.Timestamp?.doubleValue {
+            if let seconds = message?.timestamp?.doubleValue {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
                 
                 let dateFormatter = DateFormatter()
@@ -46,8 +46,6 @@ class UserCell: UITableViewCell {
                         self.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
                     }
                 }
-                
-                //print(snapshot)
                 
             }, withCancel: nil)
         }

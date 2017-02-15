@@ -11,25 +11,18 @@ import Firebase
 
 class Message: NSObject {
   
-    var FromUid: String?
-    var Timestamp: NSNumber?
-    var ToUid: String?
+    var fromUid: String?
+    var toUid: String?
     var text: String?
+    var timestamp: NSNumber?
     
     var imageUrl: String?
     var imageHeight: NSNumber?
     var imageWidth: NSNumber?
-
-/*	THIS WAS NOT PROPERLY MAPPED TO FIREBASE snapshot
-    var fromId: String?
-    var text: String?
-    var timestamp: NSNumber?
-    var toId: String?
- */
     
     func chatPartnerId() -> String? {
     
-    	return FromUid == FIRAuth.auth()?.currentUser?.uid ? ToUid : FromUid
+    	return fromUid == FIRAuth.auth()?.currentUser?.uid ? toUid : fromUid
     }
 /*
 	Introduce new init() to avoid crashing due to adding props
@@ -37,10 +30,11 @@ class Message: NSObject {
 	init(dictionary: [String: AnyObject]) {
         super.init()
         
-        FromUid = dictionary["FromUid"] as? String
-    	Timestamp = dictionary["Timestamp"] as? NSNumber
-        ToUid = dictionary["ToUid"] as? String
+        fromUid = dictionary["fromUid"] as? String
+        toUid = dictionary["toUid"] as? String
         text = dictionary["text"] as? String
+    	timestamp = dictionary["timestamp"] as? NSNumber
+        
         imageUrl = dictionary["imageUrl"] as? String
         imageHeight = dictionary["imageHeight"] as? NSNumber
         imageWidth = dictionary["imageWidth"] as? NSNumber

@@ -23,7 +23,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }
     }
     
-    var messages = [Message]()		// Let's construct an array container for this user's messages
+    var messages = [Message]()		// construct an array for this user's messages
     
     func observeMessages() {
         
@@ -34,8 +34,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(toId)
         
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
-            
-            //print(snapshot)
             
             let messageId = snapshot.key
             let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
@@ -48,14 +46,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     return
                 }
 
-/*
-		Avoiding crashes with modified Message::class
-        
-                let message = Message()
-                // potential of crashing if keys don't match :: HAS TO MAP TO CLASS
-
-                message.setValuesForKeys(dictionary)
-*/
                 // Note -> Message(dictionary: dictionary) new arg1
                 self.messages.append(Message(dictionary: dictionary))
                 
@@ -309,7 +299,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let fromId = FIRAuth.auth()?.currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
         
-        var values: [String: Any] = ["ToUid": toId, "FromUid": fromId!, "timestamp": timestamp]
+        var values: [String: Any] = ["toUid": toId, "fromUid": fromId!, "timestamp": timestamp]
         
         // Append properties dictionary onto values[] array
         // key $0, value $1
@@ -392,7 +382,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
         }
         
-        if message.FromUid == FIRAuth.auth()?.currentUser?.uid {
+        if message.fromUid == FIRAuth.auth()?.currentUser?.uid {
             // outgoing blue
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
             cell.textView.textColor = UIColor.white

@@ -66,16 +66,10 @@ class MessagesController: UITableViewController {
         // Observer 2
         messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            //print(snapshot)
+
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
-                //print(dictionary)
-                
                 let message = Message(dictionary: dictionary)
-                
-                // Method: .setvaluesforkeys() will crash if the Firebase fields are not correctly mapped or sequenced in the definition of Message() class
-                
-//                message.setValuesForKeys(dictionary)
                 
                 if let chatPartnerId = message.chatPartnerId() {
                     
@@ -105,11 +99,17 @@ class MessagesController: UITableViewController {
     func handleReloadTable() {
     
         self.messages = Array(self.messagesDictionary.values)
-        self.messages.sort(by: {(message1, message2) -> Bool in
-            
-            return (message1.Timestamp?.intValue)! > (message2.Timestamp?.intValue)!
-            
-        })
+        
+        print("Reloading table with messages = ")
+        print(self.messages.count)
+        
+        if self.messages.count > 1 {
+            self.messages.sort(by: {(message1, message2) -> Bool in
+                
+                return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                
+            })
+        }
     
         // dispatch_asynch main thread
         DispatchQueue.main.async(execute: {
@@ -132,7 +132,8 @@ class MessagesController: UITableViewController {
         
         let message = self.messages[indexPath.row]
 
-		cell.message = message			// Set message to trigger didSet() in UserCell instance
+		// Set message to trigger didSet() in UserCell instance
+        cell.message = message
         
         return cell						// return UserCell!
     }
@@ -197,8 +198,6 @@ class MessagesController: UITableViewController {
         
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: {(snapshot) in
             
-            //print(snapshot)
-            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 //self.navigationItem.title = dictionary["name"] as? String
                 
@@ -222,9 +221,10 @@ class MessagesController: UITableViewController {
     
     	let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        //titleView.backgroundColor = UIColor.red
         
-        let containerView = UIView()	// we need this view to resolve the issue of truncating title nav
+        // we need this view to resolve the issue of truncating title nav
+        let containerView = UIView()
+        
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         titleView.addSubview(containerView)

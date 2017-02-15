@@ -88,11 +88,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             
-            // Save a roundtrip ...
-            //self.messagesController.fetchUserAndSetupNavBarTitle()
-            
-            //self.messagesController.navigationItem.title = values["name"] as! String?
-            
             let user = User()
             // this setter potentially crashes if keys dont match
             user.setValuesForKeys(values)
