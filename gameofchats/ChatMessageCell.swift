@@ -7,11 +7,20 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ChatMessageCell: UICollectionViewCell {
 
 	var chatLogController = ChatLogController()
+    var message: Message?
 
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        aiv.translatesAutoresizingMaskIntoConstraints = false
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
 	let textView: UITextView = {
         
         let tv = UITextView()
@@ -23,6 +32,51 @@ class ChatMessageCell: UICollectionViewCell {
         tv.isEditable = false
         return tv
     }()
+    
+    lazy var playButton: UIButton = {
+        let button = UIButton(type: .system)
+        //button.setTitle("Play Video", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "play")
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor.white
+        
+        button.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var playerLayer: AVPlayerLayer?
+    var player: AVPlayer?
+    
+    func handlePlay() {
+        if let url = NSURL(string: (message?.videoUrl)!) {
+            
+            player = AVPlayer(url: url as URL)
+            
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = bubbleView.bounds  // bec .frame display is off
+            
+            bubbleView.layer.addSublayer(playerLayer!)
+            
+            player?.play()
+            activityIndicatorView.startAnimating()
+            playButton.isHidden = true
+            
+            print("Attempting to play video .....")
+            
+        }
+    }
+    
+    // Cleanup the AVPlayerLayer mess in the UICollectionView scroll
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        player?.pause()
+        activityIndicatorView.stopAnimating()
+        
+        // stop/pause the video when scrolling or reusing cell otherwise video still has audio running in the background
+    }
     
     static let blueColor = UIColor(r: 0, g: 137, b: 249)
     
