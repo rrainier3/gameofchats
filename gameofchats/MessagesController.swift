@@ -28,9 +28,24 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
+        // prepare for swipes #1
+//        tableView.allowsMultipleSelectionDuringEditing = true
 
     }
     
+    // prepare for swipes #2
+/*
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    // prepare for swipes #3
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        print(indexPath.row) 	// test
+        
+    }
+*/
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
     
@@ -103,14 +118,14 @@ class MessagesController: UITableViewController {
 	var timer: Timer?
     
     func handleReloadTable() {
-    
+
         self.messages = Array(self.messagesDictionary.values)
         self.messages.sort(by: {(message1, message2) -> Bool in
             
             return (message1.Timestamp?.intValue)! > (message2.Timestamp?.intValue)!
             
         })
-    
+
         // dispatch_asynch main thread
         DispatchQueue.main.async(execute: {
         	//print("We reloaded the table!")

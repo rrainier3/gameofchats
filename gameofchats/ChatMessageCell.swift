@@ -149,14 +149,14 @@ class ChatMessageCell: UICollectionViewCell {
         activityIndicatorView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
         activityIndicatorView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         activityIndicatorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+
         // add playButton & x,y,w,h constraints
         bubbleView.addSubview(playButton)
         playButton.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
         playButton.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
         playButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         playButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+
         // add x,y,w,h iOS9 constraints
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true

@@ -275,7 +275,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         uploadTask.observe(.success) { (snapshot) in
         
         	self.progressView.isHidden = true
-            //self.progressView.removeFromSuperview() -- don't know if we need to
+            self.progressView.removeFromSuperview()
 
 /*			This can now be commented out with our UIProgressView impl
 
