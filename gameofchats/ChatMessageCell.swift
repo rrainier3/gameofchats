@@ -14,6 +14,13 @@ class ChatMessageCell: UICollectionViewCell {
 	var chatLogController = ChatLogController()
     
     var message: Message?
+    
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        aiv.translatesAutoresizingMaskIntoConstraints = false
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
 
 	let textView: UITextView = {
         
@@ -54,6 +61,8 @@ class ChatMessageCell: UICollectionViewCell {
             bubbleView.layer.addSublayer(playerLayer!)
             
             player?.play()
+            activityIndicatorView.startAnimating()
+            playButton.isHidden = true
             
             print("Attempting to play video .....")
             
@@ -65,6 +74,7 @@ class ChatMessageCell: UICollectionViewCell {
     	super.prepareForReuse()
         playerLayer?.removeFromSuperlayer()
         player?.pause()
+        activityIndicatorView.stopAnimating()
         
     // stop/pause the video when scrolling or reusing cell otherwise video still has audio running in the background
     }
@@ -104,6 +114,10 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     func handleZoomTap(tapGesture: UITapGestureRecognizer) {
+    
+    	// We do not need to zoom if its a video
+    	if message?.videoUrl != nil { return }
+        
         // pro tip: do not perform a lot of custom logic inside a 
         // view class eg. UserCell, ChatMessageCell classes
         if let imageView = tapGesture.view as? UIImageView {
@@ -128,6 +142,13 @@ class ChatMessageCell: UICollectionViewCell {
         messageImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+ 
+        // add activityIndicatorView & x,y,w,h constraints
+        activityIndicatorView.addSubview(activityIndicatorView)
+        activityIndicatorView.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        activityIndicatorView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        activityIndicatorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         // add playButton & x,y,w,h constraints
         bubbleView.addSubview(playButton)
