@@ -53,6 +53,17 @@ class MessagesController: UITableViewController {
                     print("Failed to delete message:", error!)
                     return
                 }
+
+/*			Demo one way of updating table but not that safe ...
+
+    		self.messages.removeAtIndex(indexPath.row)
+    		self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+*/
+            // Proper way is to remove key-value from messagesDictionary
+            //	since it is used in call to reloadData()
+            self.messagesDictionary.removeValue(forKey: chatPartnerId)
+            self.attemptReloadOfTable()
+                
             })
         }
     }
@@ -82,6 +93,17 @@ class MessagesController: UITableViewController {
             }, withCancel: nil)			// end of Observer 1b
             
         }, withCancel: nil)				// end of Observer 1
+        
+        // Observer 2 -- deletion via firebase console!
+        ref.observe(.childRemoved, with: { (snapshot) in
+            
+            print(snapshot.key)
+            print(self.messagesDictionary)
+            
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
+            self.attemptReloadOfTable()
+            
+        }, withCancel: nil)
         
     }				// end of observeUserMessages()
     
