@@ -69,6 +69,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
     }()
     
+    // create the progressView for upload
+    lazy var progressView: UIProgressView = {
+        
+        let progressView = UIProgressView()
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
+        
+        return progressView
+    }()
+    
     let cellId = "cellId"
     
     override func viewDidLoad() {
@@ -174,6 +184,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        // create the progressView
+        containerView.addSubview(self.progressView)
+        
+        // x,y,w,h
+        self.progressView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
+        self.progressView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        self.progressView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        self.progressView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
         
         return containerView
     }()
@@ -218,23 +237,47 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             }
             
             if let videoUrl = metadata?.downloadURL()?.absoluteString {
-//                let properties: [String: Any] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
-                
-                let properties: [String: AnyObject] = ["videoUrl": videoUrl as AnyObject]
-                self.sendMessageWithProperties(properties: properties)
+                if let thumbnailImage = self.thumbnailImageForFileUrl(fileUrl: url) {
+                    
+                    self.uploadToFirebaseStorageUsingImage(thumbnailImage, completion: { (imageUrl) in
+                        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": thumbnailImage.size.width as AnyObject, "imageHeight": thumbnailImage.size.height as AnyObject, "videoUrl": videoUrl as AnyObject]
+                        self.sendMessageWithProperties(properties: properties)
+                        
+                    })
+                }
             }
             
         })
         
         uploadTask.observe(.progress) { (snapshot) in
-        	if let completedUnitCount = snapshot.progress?.completedUnitCount {
-                self.navigationItem.title = String(completedUnitCount)
-            }
+            
+            self.progressView.isHidden = false
+            self.progressView.setProgress(self.progressView.progress + 0.1, animated: true)
+            
         }
         
         uploadTask.observe(.success) { (snapshot) in
-            self.navigationItem.title = self.user?.name
+            
+            self.progressView.isHidden = true
+            self.progressView.removeFromSuperview()
+            
         }
+    }
+    
+    private func thumbnailImageForFileUrl(fileUrl: NSURL) -> UIImage? {
+        
+        let asset = AVAsset(url: fileUrl as URL)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do {
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil	)
+            return UIImage(cgImage: thumbnailCGImage)
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return nil
     }
     
     private func handleImageSelectedForInfo(info: [String: AnyObject]) {
@@ -256,13 +299,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if let selectedImage = selectedImageFromPicker {
             
-            uploadToFirebaseStorageUsingImage(image: selectedImage)
+            uploadToFirebaseStorageUsingImage(selectedImage, completion: { (imageUrl) in
+                
+                self.sendMessageWithImageUrl(imageUrl: imageUrl, image: selectedImage)
+            })
         }
     }
     
-    private func uploadToFirebaseStorageUsingImage(image: UIImage) {
-    
-    	let imageName = NSUUID().uuidString
+    fileprivate func uploadToFirebaseStorageUsingImage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+        
+        let imageName = NSUUID().uuidString
         let ref = FIRStorage.storage().reference().child("message_images").child(imageName)
         
         if let uploadData = UIImageJPEGRepresentation(image, 0.2) {
@@ -273,15 +319,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 }
                 
                 // On Success
-                print(metadata?.downloadURL()?.absoluteString as Any)
                 
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
                     
-                    self.sendMessageWithImageUrl(imageUrl: imageUrl, image: image)
+                    completion(imageUrl)
                 }
             })
         }
     }
+
     
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
         
