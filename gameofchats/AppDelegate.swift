@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.
 //
-//	 Firebase 3 - How to Swipe to Delete Messages in UITableView (Ep 22)
+//	 Firebase 3 - How to Refactor View code out of Controller (Ep 23)
 
 import UIKit
 import Firebase
