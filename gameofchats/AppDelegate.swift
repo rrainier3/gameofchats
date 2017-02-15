@@ -5,7 +5,7 @@
 //  Created by RayRainier on 1/18/17.
 //  Copyright © 2017 RadiuSense. All rights reserved.
 //
-//	 Firebase 3 - How to Play Videos with AVPlayer (Ep 21)
+//	 Firebase 3 - How to Swipe to Delete Messages in UITableView (Ep 22)
 
 import UIKit
 import Firebase
