@@ -112,6 +112,10 @@ class ChatMessageCell: UICollectionViewCell {
     }()
     
     func handleZoomTap(tapGesture: UITapGestureRecognizer) {
+    
+    	// prevent zoom on video
+        if message?.videoUrl != nil { return }
+        
         // pro tip: do not perform a lot of custom logic inside a 
         // view class eg. UserCell, ChatMessageCell classes
         if let imageView = tapGesture.view as? UIImageView {
