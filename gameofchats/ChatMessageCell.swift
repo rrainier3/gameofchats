@@ -35,7 +35,6 @@ class ChatMessageCell: UICollectionViewCell {
     
     lazy var playButton: UIButton = {
         let button = UIButton(type: .system)
-        //button.setTitle("Play Video", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "play")
         button.setImage(image, for: .normal)
