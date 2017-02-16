@@ -58,26 +58,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         }, withCancel: nil)
     }
 
-    // create the input text field
-    lazy var inputTextField:UITextField = {
-    
-    	let textField = UITextField()
-        textField.placeholder = "Enter message..."
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.delegate = self 	// this will enable Return key on Send
-        return textField
-        
-    }()
-    
-    // create the progressView for upload
-    lazy var progressView: UIProgressView = {
-        
-        let progressView = UIProgressView()
-        progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.isHidden = true
-        
-        return progressView
-    }()
+
     
     let cellId = "cellId"
     
@@ -126,75 +107,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 
 	// this is needed or else inputAccessoryView will not appear!
 	override var canBecomeFirstResponder: Bool { return true }
+        
+	lazy var inputContainerView: ChatInputContainerView = {
     
-    
-	lazy var inputContainerView: UIView = {
-        let containerView = UIView()
-        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
-        containerView.backgroundColor = UIColor.white
+    	let chatInputContainerView = ChatInputContainerView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        return chatInputContainerView
         
-        // create uploadImage icon
-        let uploadImageView = UIImageView()
-        uploadImageView.isUserInteractionEnabled = true
-        uploadImageView.image = UIImage(named: "upload_image_icon")
-        uploadImageView.translatesAutoresizingMaskIntoConstraints = false
-        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
-        
-		containerView.addSubview(uploadImageView)
-        
-        // x,y,w,h
-        uploadImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        uploadImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        // create the send button
-        let sendButton = UIButton(type: .system)
-        sendButton.setTitle("Send", for: .normal)
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // handle control event = TouchUpInside
-        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        
-        containerView.addSubview(sendButton)
-        
-        // x,y,w,h
-        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        sendButton.bottomAnchor.constraint(equalTo: containerView.centerYAnchor, constant: +24).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-        
-        // create the input text field
-        containerView.addSubview(self.inputTextField)
-        
-        // x,y,w,h
-        self.inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
-        self.inputTextField.bottomAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 24).isActive = true
-        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-        
-        // create the separatorLine
-        let separatorLineView = UIView()
-        separatorLineView.backgroundColor = UIColor(r: 230, g: 230, b: 230)
-        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(separatorLineView)
-        // x, y, w, h
-        separatorLineView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        // create the progressView
-        containerView.addSubview(self.progressView)
-        
-        // x,y,w,h
-        self.progressView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        self.progressView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        self.progressView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        self.progressView.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        
-        
-        return containerView
     }()
     
     func handleUploadTap() {
@@ -251,15 +169,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         uploadTask.observe(.progress) { (snapshot) in
             
-            self.progressView.isHidden = false
-            self.progressView.setProgress(self.progressView.progress + 0.1, animated: true)
+            self.inputContainerView.progressView.isHidden = false
+            self.inputContainerView.progressView.setProgress(self.inputContainerView.progressView.progress + 0.1, animated: true)
             
         }
         
         uploadTask.observe(.success) { (snapshot) in
             
-            self.progressView.isHidden = true
-            self.progressView.removeFromSuperview()
+            self.inputContainerView.progressView.isHidden = true
+            self.inputContainerView.progressView.removeFromSuperview()
             
         }
     }
@@ -358,7 +276,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             }
             
             // clear input field after SEND/RETURN key
-            self.inputTextField.text = nil
+            self.inputContainerView.inputTextField.text = nil
             
             let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId!).child(toId)
             
@@ -375,18 +293,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func handleSend() {
         
         // fix to not accept blanks!
-        guard let input = inputTextField.text, input.characters.count > 0 else { return }
+        guard let input = inputContainerView.inputTextField.text, input.characters.count > 0 else { return }
         
-        let properties = ["text": inputTextField.text!]
+        let properties = ["text": inputContainerView.inputTextField.text!]
         
         sendMessageWithProperties(properties: properties)
         
 	}
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        handleSend()
-        return true
-    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
     
@@ -422,7 +336,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.textView.isHidden = true
         }
         
-        // if videoUrl then button is hidden!
+        // if not videoUrl then button is hidden!
         cell.playButton.isHidden = message.videoUrl == nil
         
         return cell
